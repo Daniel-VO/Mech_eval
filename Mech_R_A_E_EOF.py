@@ -30,7 +30,7 @@ for root, dirnames, filenames in os.walk('.'):
 for i in files:
 	filename=os.path.splitext(i)[0]
 
-	# ~ sys.stdout=open('Results.log','a')
+	sys.stdout=open('Results.log','a')
 
 	Zeit_s,Kraft_N,Weg_mm,Spannung_MPa,Dehnung_perc=numpy.genfromtxt((conv(t) for t in open(i)),delimiter='\t',unpack=True,skip_header=1,skip_footer=0,usecols=range(5))
 	Spannung=(Spannung_MPa-Spannung_MPa[0])*1e6
