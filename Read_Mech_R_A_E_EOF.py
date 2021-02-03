@@ -169,7 +169,7 @@ for s in sets:
 
 	ax1.set_xlabel(xlabel,fontsize=10)
 	plt.setp(ax1.xaxis.get_majorticklabels(),rotation=45,ha='right',rotation_mode='anchor')
-	ax1.set_ylabel(r'$U_{\rm{f}}/\rm{J\cdot m}^{-3}$',fontsize=10)
+	ax1.set_ylabel(r'$U_{\rm{f}}/(\rm{J\cdot m}^{-3})$',fontsize=10)
 	ax1.ticklabel_format(style='sci',axis='y',scilimits=(0,0))
 	ax1.tick_params(direction='out')
 	ax1.tick_params(axis='x',pad=2,labelsize=8)
