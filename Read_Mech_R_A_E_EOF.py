@@ -1,5 +1,5 @@
 """
-Created 12. January 2021 by Daniel Van Opdenbosch, Technical University of Munich
+Created 03. February 2021 by Daniel Van Opdenbosch, Technical University of Munich
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. It is distributed without any warranty or implied warranty of merchantability or fitness for a particular purpose. See the GNU general public license for more details: <http://www.gnu.org/licenses/>
 """
@@ -52,7 +52,7 @@ for i,value in enumerate(sampledata):
 	with open('Read.log','a') as e:
 		print(e,sampledata[i])
 
-sets=['']
+sets=['V43']
 
 for s in sets:
 	nameplot=[]
@@ -72,7 +72,7 @@ for s in sets:
 	EOFplstdplot=[]
 	for m,name in enumerate(sampledata):
 		if s in sampledata[m][0]:
-			nameplot.append(sampledata[m][0])
+			nameplot.append(r'$\rm{'+s+'}$')
 			Rplot.append(sampledata[m][2])
 			Rstdplot.append(sampledata[m][4])
 			Aplot.append(sampledata[m][6])
@@ -87,97 +87,97 @@ for s in sets:
 			EOFplstdplot.append(sampledata[m][24])
 			xlabel=r'$\rm{Probe}$'
 
-	########################################################################
+########################################################################
 
-	plt.clf()
-	mpl.rc('text',usetex=True)
-	mpl.rc('text.latex',preamble=r'\usepackage[helvet]{sfmath}')
-	fig,ax1=plt.subplots(figsize=(7.5/2.54,7.5/2.54))
+plt.clf()
+mpl.rc('text',usetex=True)
+mpl.rc('text.latex',preamble=r'\usepackage[helvet]{sfmath}')
+fig,ax1=plt.subplots(figsize=(7.5/2.54,5.3/2.54))
 
-	ax1.errorbar(nameplot,Rplot,marker='s',color='k',yerr=Rstdplot,markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0)
+ax1.errorbar(nameplot,Rplot,marker='s',color='k',yerr=Rstdplot,markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0)
 
-	ax1.set_xlabel(xlabel,fontsize=10)
-	plt.setp(ax1.xaxis.get_majorticklabels(),rotation=45,ha='right',rotation_mode='anchor')
-	ax1.set_ylabel(r'$R/\rm{Pa}$',fontsize=10)
-	ax1.tick_params(direction='out')
-	ax1.tick_params(axis='x',pad=2,labelsize=8)
-	ax1.tick_params(axis='y',pad=2,labelsize=8)
-	ax1.ticklabel_format(style='sci',axis='y',scilimits=(-3,3))
-	ax1.xaxis.get_offset_text().set_size(8)
-	ax1.yaxis.get_offset_text().set_size(8)
-	plt.tight_layout(pad=0.1)
-	plt.savefig('R'+s+'.pdf',transparent=True)
-	plt.savefig('R'+s+'.png',dpi=600)
-	plt.close('all')
+# ~ ax1.set_xlabel(xlabel,fontsize=10)
+plt.setp(ax1.xaxis.get_majorticklabels(),rotation=45,ha='right',rotation_mode='anchor')
+ax1.set_ylabel(r'$R/\rm{Pa}$',fontsize=10)
+ax1.tick_params(direction='out')
+ax1.tick_params(axis='x',pad=2,labelsize=8)
+ax1.tick_params(axis='y',pad=2,labelsize=8)
+ax1.ticklabel_format(style='sci',axis='y',scilimits=(-3,3))
+ax1.xaxis.get_offset_text().set_size(8)
+ax1.yaxis.get_offset_text().set_size(8)
+plt.tight_layout(pad=0.1)
+plt.savefig('R.pdf',transparent=True)
+plt.savefig('R.png',dpi=600)
+plt.close('all')
 
-	########################################################################
+########################################################################
 
-	plt.clf()
-	mpl.rc('text',usetex=True)
-	mpl.rc('text.latex',preamble=r'\usepackage[helvet]{sfmath}')
-	fig,ax1=plt.subplots(figsize=(7.5/2.54,7.5/2.54))
+plt.clf()
+mpl.rc('text',usetex=True)
+mpl.rc('text.latex',preamble=r'\usepackage[helvet]{sfmath}')
+fig,ax1=plt.subplots(figsize=(7.5/2.54,5.3/2.54))
 
-	ax1.errorbar(nameplot,Aplot,marker='s',color='k',yerr=Astdplot,markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0)
-	ax1.errorbar(nameplot,Agplot,marker='o',color='k',yerr=Agstdplot,markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0)
+ax1.errorbar(nameplot,Aplot,marker='s',color='k',yerr=Astdplot,markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0)
+ax1.errorbar(nameplot,Agplot,marker='o',color='k',yerr=Agstdplot,markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0)
 
-	ax1.set_xlabel(xlabel,fontsize=10)
-	plt.setp(ax1.xaxis.get_majorticklabels(),rotation=45,ha='right',rotation_mode='anchor')
-	ax1.set_ylabel(r'$A/1$',fontsize=10)
-	ax1.tick_params(direction='out')
-	ax1.tick_params(axis='x',pad=2,labelsize=8)
-	ax1.tick_params(axis='y',pad=2,labelsize=8)
-	ax1.ticklabel_format(style='sci',axis='y',scilimits=(-3,3))
-	ax1.xaxis.get_offset_text().set_size(8)
-	ax1.yaxis.get_offset_text().set_size(8)
-	plt.tight_layout(pad=0.1)
-	plt.savefig('A'+s+'.pdf',transparent=True)
-	plt.savefig('A'+s+'.png',dpi=600)
-	plt.close('all')
+# ~ ax1.set_xlabel(xlabel,fontsize=10)
+plt.setp(ax1.xaxis.get_majorticklabels(),rotation=45,ha='right',rotation_mode='anchor')
+ax1.set_ylabel(r'$A/1$',fontsize=10)
+ax1.tick_params(direction='out')
+ax1.tick_params(axis='x',pad=2,labelsize=8)
+ax1.tick_params(axis='y',pad=2,labelsize=8)
+ax1.ticklabel_format(style='sci',axis='y',scilimits=(-3,3))
+ax1.xaxis.get_offset_text().set_size(8)
+ax1.yaxis.get_offset_text().set_size(8)
+plt.tight_layout(pad=0.1)
+plt.savefig('A.pdf',transparent=True)
+plt.savefig('A.png',dpi=600)
+plt.close('all')
 
-	########################################################################
+########################################################################
 
-	plt.clf()
-	mpl.rc('text',usetex=True)
-	mpl.rc('text.latex',preamble=r'\usepackage[helvet]{sfmath}')
-	fig,ax1=plt.subplots(figsize=(7.5/2.54,7.5/2.54))
+plt.clf()
+mpl.rc('text',usetex=True)
+mpl.rc('text.latex',preamble=r'\usepackage[helvet]{sfmath}')
+fig,ax1=plt.subplots(figsize=(7.5/2.54,5.3/2.54))
 
-	ax1.errorbar(nameplot,Eplot,marker='s',color='k',yerr=Estdplot,markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0)
+ax1.errorbar(nameplot,Eplot,marker='s',color='k',yerr=Estdplot,markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0)
 
-	ax1.set_xlabel(xlabel,fontsize=10)
-	plt.setp(ax1.xaxis.get_majorticklabels(),rotation=45,ha='right',rotation_mode='anchor')
-	ax1.set_ylabel(r'$E/\rm{Pa}$',fontsize=10)
-	ax1.tick_params(direction='out')
-	ax1.tick_params(axis='x',pad=2,labelsize=8)
-	ax1.tick_params(axis='y',pad=2,labelsize=8)
-	ax1.ticklabel_format(style='sci',axis='y',scilimits=(-3,3))
-	ax1.xaxis.get_offset_text().set_size(8)
-	ax1.yaxis.get_offset_text().set_size(8)
-	plt.tight_layout(pad=0.1)
-	plt.savefig('E'+s+'.pdf',transparent=True)
-	plt.savefig('E'+s+'.png',dpi=600)
-	plt.close('all')
+# ~ ax1.set_xlabel(xlabel,fontsize=10)
+plt.setp(ax1.xaxis.get_majorticklabels(),rotation=45,ha='right',rotation_mode='anchor')
+ax1.set_ylabel(r'$E/\rm{Pa}$',fontsize=10)
+ax1.tick_params(direction='out')
+ax1.tick_params(axis='x',pad=2,labelsize=8)
+ax1.tick_params(axis='y',pad=2,labelsize=8)
+ax1.ticklabel_format(style='sci',axis='y',scilimits=(-3,3))
+ax1.xaxis.get_offset_text().set_size(8)
+ax1.yaxis.get_offset_text().set_size(8)
+plt.tight_layout(pad=0.1)
+plt.savefig('E.pdf',transparent=True)
+plt.savefig('E.png',dpi=600)
+plt.close('all')
 
-	########################################################################
+########################################################################
 
-	plt.clf()
-	mpl.rc('text',usetex=True)
-	mpl.rc('text.latex',preamble=r'\usepackage[helvet]{sfmath}')
-	fig,ax1=plt.subplots(figsize=(7.5/2.54,7.5/2.54))
+plt.clf()
+mpl.rc('text',usetex=True)
+mpl.rc('text.latex',preamble=r'\usepackage[helvet]{sfmath}')
+fig,ax1=plt.subplots(figsize=(7.5/2.54,5.3/2.54))
 
-	ax1.errorbar(nameplot,EOFplot,marker='s',color='k',yerr=EOFstdplot,markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0)
-	ax1.errorbar(nameplot,EOFplplot,marker='o',color='k',yerr=EOFplstdplot,markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0)
+ax1.errorbar(nameplot,EOFplot,marker='s',color='k',yerr=EOFstdplot,markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0)
+ax1.errorbar(nameplot,EOFplplot,marker='o',color='k',yerr=EOFplstdplot,markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0)
 
-	ax1.set_xlabel(xlabel,fontsize=10)
-	plt.setp(ax1.xaxis.get_majorticklabels(),rotation=45,ha='right',rotation_mode='anchor')
-	ax1.set_ylabel(r'$U_{\rm{f}}/(\rm{J\cdot m}^{-3})$',fontsize=10)
-	ax1.ticklabel_format(style='sci',axis='y',scilimits=(0,0))
-	ax1.tick_params(direction='out')
-	ax1.tick_params(axis='x',pad=2,labelsize=8)
-	ax1.tick_params(axis='y',pad=2,labelsize=8)
-	ax1.ticklabel_format(style='sci',axis='y',scilimits=(-3,3))
-	ax1.xaxis.get_offset_text().set_size(8)
-	ax1.yaxis.get_offset_text().set_size(8)
-	plt.tight_layout(pad=0.1)
-	plt.savefig('EOF'+s+'.pdf',transparent=True)
-	plt.savefig('EOF'+s+'.png',dpi=600)
-	plt.close('all')
+# ~ ax1.set_xlabel(xlabel,fontsize=10)
+plt.setp(ax1.xaxis.get_majorticklabels(),rotation=45,ha='right',rotation_mode='anchor')
+ax1.set_ylabel(r'$U_{\rm{f}}/(\rm{J\cdot m}^{-3})$',fontsize=10)
+ax1.ticklabel_format(style='sci',axis='y',scilimits=(0,0))
+ax1.tick_params(direction='out')
+ax1.tick_params(axis='x',pad=2,labelsize=8)
+ax1.tick_params(axis='y',pad=2,labelsize=8)
+ax1.ticklabel_format(style='sci',axis='y',scilimits=(-3,3))
+ax1.xaxis.get_offset_text().set_size(8)
+ax1.yaxis.get_offset_text().set_size(8)
+plt.tight_layout(pad=0.1)
+plt.savefig('EOF.pdf',transparent=True)
+plt.savefig('EOF.png',dpi=600)
+plt.close('all')
