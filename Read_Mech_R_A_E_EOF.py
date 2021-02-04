@@ -52,24 +52,22 @@ for i,value in enumerate(sampledata):
 	with open('Read.log','a') as e:
 		print(e,sampledata[i])
 
-sets=['V43']
-
-for s in sets:
-	nameplot=[]
-	Rplot=[]
-	Rstdplot=[]
-	Aplot=[]
-	Astdplot=[]
-	Eplot=[]
-	Estdplot=[]
-	Econfloplot=[]
-	Econfupplot=[]
-	EOFplot=[]
-	EOFstdplot=[]
-	Agplot=[]
-	Agstdplot=[]
-	EOFplplot=[]
-	EOFplstdplot=[]
+nameplot=[]
+Rplot=[]
+Rstdplot=[]
+Aplot=[]
+Astdplot=[]
+Eplot=[]
+Estdplot=[]
+Econfloplot=[]
+Econfupplot=[]
+EOFplot=[]
+EOFstdplot=[]
+Agplot=[]
+Agstdplot=[]
+EOFplplot=[]
+EOFplstdplot=[]
+for s in ['']:	#Probensaetze
 	for m,name in enumerate(sampledata):
 		if s in sampledata[m][0]:
 			nameplot.append(r'$\rm{'+s+'}$')
