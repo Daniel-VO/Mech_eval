@@ -1,5 +1,5 @@
 """
-Created 14. Juni 2021 by Daniel Van Opdenbosch, Technical University of Munich
+Created 15. Juni 2021 by Daniel Van Opdenbosch, Technical University of Munich
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. It is distributed without any warranty or implied warranty of merchantability or fitness for a particular purpose. See the GNU general public license for more details: <http://www.gnu.org/licenses/>
 """
@@ -43,9 +43,10 @@ def mech(i):
 	Dehnung-=min(Dehnung)
 
 	R=max(Spannung)
+	indBruch=numpy.where(Spannung>=R/10)[-1][-1]
 
 	Agleichmass=float(Dehnung[numpy.where(Spannung==R)][0])
-	Abruch=float(Dehnung[numpy.where(Spannung>=R/10)][::-1][0])
+	Abruch=float(Dehnung[indBruch])
 
 	steps=int(len(Dehnung[numpy.where(Dehnung<Agleichmass)])/Punkte)
 	theils=numpy.array([])
@@ -60,7 +61,7 @@ def mech(i):
 	Econfup=theil[3]
 
 	Ag=Agleichmass-R/E
-	A=Abruch-float(Spannung[numpy.where(Spannung>=R/10)][::-1][0])/E
+	A=Abruch-float(Spannung[indBruch])/E
 
 	W=numpy.trapz(Spannung[numpy.where(Dehnung<=Abruch)],x=Dehnung[numpy.where(Dehnung<=Abruch)])
 	Wpl=W-R**2/E/2
@@ -72,14 +73,21 @@ def mech(i):
 	mpl.rc('text.latex',preamble=r'\usepackage[helvet]{sfmath}')
 	fig,ax1=plt.subplots(figsize=(7.5/2.54,5.3/2.54))
 
-	ax1.plot(Dehnung[numpy.where((Dehnung>=A)&(Dehnung<=Abruch))],(Dehnung[numpy.where((Dehnung>=A)&(Dehnung<=Abruch))]+A)*E-numpy.min((Dehnung[numpy.where((Dehnung>=A)&(Dehnung<=Abruch))]+A)*E),'k--',linewidth=0.5,path_effects=[pe.Stroke(linewidth=1,foreground='white'),pe.Normal()])
-	plt.plot(Dehnung[numpy.where(Dehnung<=Agleichmass)],Dehnung[numpy.where(Dehnung<=Agleichmass)]*E+disp,'k',linewidth=0.5,path_effects=[pe.Stroke(linewidth=1,foreground='white'),pe.Normal()])
-	plt.plot(Dehnung[numpy.where(Dehnung<=Agleichmass)],Dehnung[numpy.where(Dehnung<=Agleichmass)]*Econflo+disp,'k:',linewidth=0.5,path_effects=[pe.Stroke(linewidth=1,foreground='white'),pe.Normal()])
-	plt.plot(Dehnung[numpy.where(Dehnung<=Agleichmass)],Dehnung[numpy.where(Dehnung<=Agleichmass)]*Econfup+disp,'k:',linewidth=0.5,path_effects=[pe.Stroke(linewidth=1,foreground='white'),pe.Normal()])
-	ax1.errorbar(Abruch,R*0.25,marker='s',color='k',markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0,path_effects=[pe.Stroke(linewidth=2,foreground='w'),pe.Normal()],zorder=10)
+	ax1.plot(Dehnung,Dehnung*E+disp,'k',linewidth=0.5,path_effects=[pe.Stroke(linewidth=1,foreground='white'),pe.Normal()])
+	ax1.plot(Dehnung,Dehnung*Econflo+disp,'k:',linewidth=0.5,path_effects=[pe.Stroke(linewidth=1,foreground='white'),pe.Normal()])
+	ax1.plot(Dehnung,Dehnung*Econfup+disp,'k:',linewidth=0.5,path_effects=[pe.Stroke(linewidth=1,foreground='white'),pe.Normal()])
+
+	ax1.plot(Dehnung+Agleichmass-R/E,Dehnung*E,'k--',linewidth=0.5,path_effects=[pe.Stroke(linewidth=1,foreground='white'),pe.Normal()])
+	ax1.errorbar(Agleichmass-R/E,0,marker='s',color='k',markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0,path_effects=[pe.Stroke(linewidth=2,foreground='w'),pe.Normal()],zorder=10)
 	ax1.errorbar(Agleichmass,R,marker='s',color='k',markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0,path_effects=[pe.Stroke(linewidth=2,foreground='w'),pe.Normal()],zorder=10)
+
+	ax1.plot(Dehnung+Abruch-float(Spannung[indBruch])/E,Dehnung*E,'k--',linewidth=0.5,path_effects=[pe.Stroke(linewidth=1,foreground='white'),pe.Normal()])
+	ax1.errorbar(Abruch-float(Spannung[indBruch])/E,0,marker='s',color='k',markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0,path_effects=[pe.Stroke(linewidth=2,foreground='w'),pe.Normal()],zorder=10)
+	ax1.errorbar(Abruch,float(Spannung[indBruch]),marker='s',color='k',markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0,path_effects=[pe.Stroke(linewidth=2,foreground='w'),pe.Normal()],zorder=10)
+
 	ax1.plot(Dehnung[numpy.where(Dehnung<=Abruch*1.5)],Spannung[numpy.where(Dehnung<=Abruch*1.5)],'k',linewidth=0.5,path_effects=[pe.Stroke(linewidth=1,foreground='white'),pe.Normal()])
 
+	ax1.set_xlim([-max(Dehnung[numpy.where(Dehnung<=Abruch*1.5)])*0.05,max(Dehnung[numpy.where(Dehnung<=Abruch*1.5)])*1.05])
 	ax1.set_ylim([-R*0.05,R*1.1])
 
 	ax1.set_xlabel(r'$\epsilon/1$',fontsize=10)
