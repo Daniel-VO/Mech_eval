@@ -61,7 +61,7 @@ def mech(i):
 	Ag=Agleichmass-R/E
 	A=Abruch-float(Spannung[indBruch])/E
 
-	W=numpy.trapz(Spannung[numpy.where(Dehnung<=Abruch)],x=Dehnung[numpy.where(Dehnung<=Abruch)])
+	W=numpy.trapz(Spannung[:indBruch],x=Dehnung[:indBruch])
 	Wpl=W-R**2/E/2
 
 	print(filename,'R',R,'A',A,'E',E,'W',W,'Ag',Ag,'Wpl',Wpl)
