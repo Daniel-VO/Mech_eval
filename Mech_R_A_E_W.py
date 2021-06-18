@@ -1,5 +1,5 @@
 """
-Created 15. Juni 2021 by Daniel Van Opdenbosch, Technical University of Munich
+Created 18. Juni 2021 by Daniel Van Opdenbosch, Technical University of Munich
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. It is distributed without any warranty or implied warranty of merchantability or fitness for a particular purpose. See the GNU general public license for more details: <http://www.gnu.org/licenses/>
 """
@@ -35,30 +35,28 @@ def mech(i):
 
 	Punkte=1000		#Punkte pro Segment zur Bestimmung von E
 
-	args=numpy.where(Spannung>numpy.pi*numpy.median(abs(numpy.diff(Spannung))))[0]
-	if len(args)>2*Punkte:
-		Spannung=Spannung[args]
-		Dehnung=Dehnung[args]
-	Spannung-=min(Spannung)
-	Dehnung-=min(Dehnung)
-
 	R=max(Spannung)
-	indBruch=numpy.where(Spannung>=R/10)[-1][-1]
 
-	Agleichmass=float(Dehnung[numpy.where(Spannung==R)][0])
-	Abruch=float(Dehnung[indBruch])
-
-	steps=int(len(Dehnung[numpy.where(Dehnung<Agleichmass)])/Punkte)
+	Agleichmass0=float(Dehnung[numpy.where(Spannung==R)][0])
+	steps=int(len(Dehnung[numpy.where(Dehnung<Agleichmass0)])/Punkte)
 	theils=numpy.array([])
 	for i in numpy.arange(steps):
-		ind=numpy.where((Dehnung>=i*Agleichmass/steps)&(Dehnung<(1+i)*Agleichmass/steps))
-		theils=numpy.append(theils,stats.theilslopes(Spannung[ind],Dehnung[ind],0.9))
+		ind=numpy.where((Dehnung>=i*Agleichmass0/steps)&(Dehnung<(1+i)*Agleichmass0/steps))
+		theils=numpy.append(theils,stats.theilslopes(Spannung[ind],Dehnung[ind]))
 	theils=theils.reshape(steps,4)
 	theil=theils[numpy.where(theils[:,0]==max(theils[:,0]))][0]
 	E=theil[0]
 	disp=theil[1]
 	Econflo=theil[2]
 	Econfup=theil[3]
+
+	Dehnung+=disp/E
+	Spannung=Spannung[numpy.where(Dehnung>0)]
+	Dehnung=Dehnung[numpy.where(Dehnung>0)]
+
+	indBruch=numpy.where(Spannung>=R/10)[-1][-1]
+	Agleichmass=float(Dehnung[numpy.where(Spannung==R)][0])
+	Abruch=float(Dehnung[indBruch])
 
 	Ag=Agleichmass-R/E
 	A=Abruch-float(Spannung[indBruch])/E
@@ -73,9 +71,9 @@ def mech(i):
 	mpl.rc('text.latex',preamble=r'\usepackage[helvet]{sfmath}')
 	fig,ax1=plt.subplots(figsize=(7.5/2.54,5.3/2.54))
 
-	ax1.plot(Dehnung,Dehnung*E+disp,'k',linewidth=0.5,path_effects=[pe.Stroke(linewidth=1,foreground='white'),pe.Normal()])
-	ax1.plot(Dehnung,Dehnung*Econflo+disp,'k:',linewidth=0.5,path_effects=[pe.Stroke(linewidth=1,foreground='white'),pe.Normal()])
-	ax1.plot(Dehnung,Dehnung*Econfup+disp,'k:',linewidth=0.5,path_effects=[pe.Stroke(linewidth=1,foreground='white'),pe.Normal()])
+	ax1.plot(Dehnung,Dehnung*E,'k',linewidth=0.5,path_effects=[pe.Stroke(linewidth=1,foreground='white'),pe.Normal()])
+	ax1.plot(Dehnung,Dehnung*Econflo,'k:',linewidth=0.5,path_effects=[pe.Stroke(linewidth=1,foreground='white'),pe.Normal()])
+	ax1.plot(Dehnung,Dehnung*Econfup,'k:',linewidth=0.5,path_effects=[pe.Stroke(linewidth=1,foreground='white'),pe.Normal()])
 
 	ax1.plot(Dehnung+Agleichmass-R/E,Dehnung*E,'k--',linewidth=0.5,path_effects=[pe.Stroke(linewidth=1,foreground='white'),pe.Normal()])
 	ax1.errorbar(Agleichmass-R/E,0,marker='s',color='k',markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0,path_effects=[pe.Stroke(linewidth=2,foreground='w'),pe.Normal()],zorder=10)
