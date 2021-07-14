@@ -59,7 +59,7 @@ def mech(i):
 	Abruch=float(Dehnung[indBruch])
 
 	Ag=Agleichmass-R/E
-	A=Abruch-float(Spannung[indBruch])/E
+	A=Abruch-float(numpy.median(Spannung[indBruch-5:indBruch]))/E
 
 	W=numpy.trapz(Spannung[:indBruch],x=Dehnung[:indBruch])
 	Wpl=W-R**2/E/2
@@ -79,9 +79,9 @@ def mech(i):
 	ax1.errorbar(Agleichmass-R/E,0,marker='s',color='k',markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0,path_effects=[pe.Stroke(linewidth=2,foreground='w'),pe.Normal()],zorder=10)
 	ax1.errorbar(Agleichmass,R,marker='s',color='k',markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0,path_effects=[pe.Stroke(linewidth=2,foreground='w'),pe.Normal()],zorder=10)
 
-	ax1.plot(Dehnung+Abruch-float(Spannung[indBruch])/E,Dehnung*E,'k--',linewidth=0.5,path_effects=[pe.Stroke(linewidth=1,foreground='white'),pe.Normal()])
-	ax1.errorbar(Abruch-float(Spannung[indBruch])/E,0,marker='s',color='k',markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0,path_effects=[pe.Stroke(linewidth=2,foreground='w'),pe.Normal()],zorder=10)
-	ax1.errorbar(Abruch,float(Spannung[indBruch]),marker='s',color='k',markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0,path_effects=[pe.Stroke(linewidth=2,foreground='w'),pe.Normal()],zorder=10)
+	ax1.plot(Dehnung+Abruch-float(numpy.median(Spannung[indBruch-5:indBruch]))/E,Dehnung*E,'k--',linewidth=0.5,path_effects=[pe.Stroke(linewidth=1,foreground='white'),pe.Normal()])
+	ax1.errorbar(Abruch-float(numpy.median(Spannung[indBruch-5:indBruch]))/E,0,marker='s',color='k',markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0,path_effects=[pe.Stroke(linewidth=2,foreground='w'),pe.Normal()],zorder=10)
+	ax1.errorbar(Abruch,float(numpy.median(Spannung[indBruch-5:indBruch])),marker='s',color='k',markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0,path_effects=[pe.Stroke(linewidth=2,foreground='w'),pe.Normal()],zorder=10)
 
 	ax1.plot(Dehnung[numpy.where(Dehnung<=Abruch*1.5)],Spannung[numpy.where(Dehnung<=Abruch*1.5)],'k',linewidth=0.5,path_effects=[pe.Stroke(linewidth=1,foreground='white'),pe.Normal()])
 
