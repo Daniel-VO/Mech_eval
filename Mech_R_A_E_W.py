@@ -33,15 +33,15 @@ def mech(i):
 	Spannung=(Spannung_MPa-Spannung_MPa[0])*1e6
 	Dehnung=(Dehnung_perc-Dehnung_perc[0])/1e2
 
-	Punkte=1000		#Punkte pro Segment zur Bestimmung von E
+	Punkte=100		#Punkte pro Segment zur Bestimmung von E
 
 	R=max(Spannung)
 
-	Agleichmass0=float(Dehnung[numpy.where(Spannung==R)][0])
-	steps=int(len(Dehnung[numpy.where(Dehnung<Agleichmass0)])/Punkte)
+	Agt0=float(Dehnung[numpy.where(Spannung==R)][0])
+	steps=len(Dehnung[numpy.where(Dehnung<Agt0)])//Punkte
 	theils=numpy.array([])
 	for i in numpy.arange(steps):
-		ind=numpy.where((Dehnung>=i*Agleichmass0/steps)&(Dehnung<(1+i)*Agleichmass0/steps))
+		ind=numpy.where((Dehnung>=i*Agt0/steps)&(Dehnung<(1+i)*Agt0/steps))
 		theils=numpy.append(theils,stats.theilslopes(Spannung[ind],Dehnung[ind]))
 	theils=theils.reshape(steps,4)
 	theil=theils[numpy.where(theils[:,0]==max(theils[:,0]))][0]
@@ -55,11 +55,11 @@ def mech(i):
 	Dehnung=Dehnung[numpy.where(Dehnung>0)]
 
 	indBruch=numpy.where(Spannung>=R/10)[-1][-1]
-	Agleichmass=float(Dehnung[numpy.where(Spannung==R)][0])
-	Abruch=float(Dehnung[indBruch])
+	Agt=float(Dehnung[numpy.where(Spannung==R)][0])
+	At=float(Dehnung[indBruch])
 
-	Ag=Agleichmass-R/E
-	A=Abruch-float(numpy.median(Spannung[indBruch-5:indBruch]))/E
+	Ag=Agt-R/E
+	A=At-float(numpy.median(Spannung[indBruch-5:indBruch]))/E
 
 	W=numpy.trapz(Spannung[:indBruch],x=Dehnung[:indBruch])
 	Wpl=W-R**2/E/2
@@ -75,17 +75,17 @@ def mech(i):
 	ax1.plot(Dehnung,Dehnung*Econflo,'k:',linewidth=0.5,path_effects=[pe.Stroke(linewidth=1,foreground='white'),pe.Normal()])
 	ax1.plot(Dehnung,Dehnung*Econfup,'k:',linewidth=0.5,path_effects=[pe.Stroke(linewidth=1,foreground='white'),pe.Normal()])
 
-	ax1.plot(Dehnung+Agleichmass-R/E,Dehnung*E,'k--',linewidth=0.5,path_effects=[pe.Stroke(linewidth=1,foreground='white'),pe.Normal()])
-	ax1.errorbar(Agleichmass-R/E,0,marker='s',color='k',markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0,path_effects=[pe.Stroke(linewidth=2,foreground='w'),pe.Normal()],zorder=10)
-	ax1.errorbar(Agleichmass,R,marker='s',color='k',markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0,path_effects=[pe.Stroke(linewidth=2,foreground='w'),pe.Normal()],zorder=10)
+	ax1.plot(Dehnung+Agt-R/E,Dehnung*E,'k--',linewidth=0.5,path_effects=[pe.Stroke(linewidth=1,foreground='white'),pe.Normal()])
+	ax1.errorbar(Agt-R/E,0,marker='s',color='k',markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0,path_effects=[pe.Stroke(linewidth=2,foreground='w'),pe.Normal()],zorder=10)
+	ax1.errorbar(Agt,R,marker='s',color='k',markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0,path_effects=[pe.Stroke(linewidth=2,foreground='w'),pe.Normal()],zorder=10)
 
-	ax1.plot(Dehnung+Abruch-float(numpy.median(Spannung[indBruch-5:indBruch]))/E,Dehnung*E,'k--',linewidth=0.5,path_effects=[pe.Stroke(linewidth=1,foreground='white'),pe.Normal()])
-	ax1.errorbar(Abruch-float(numpy.median(Spannung[indBruch-5:indBruch]))/E,0,marker='s',color='k',markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0,path_effects=[pe.Stroke(linewidth=2,foreground='w'),pe.Normal()],zorder=10)
-	ax1.errorbar(Abruch,float(numpy.median(Spannung[indBruch-5:indBruch])),marker='s',color='k',markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0,path_effects=[pe.Stroke(linewidth=2,foreground='w'),pe.Normal()],zorder=10)
+	ax1.plot(Dehnung+At-float(numpy.median(Spannung[indBruch-5:indBruch]))/E,Dehnung*E,'k--',linewidth=0.5,path_effects=[pe.Stroke(linewidth=1,foreground='white'),pe.Normal()])
+	ax1.errorbar(At-float(numpy.median(Spannung[indBruch-5:indBruch]))/E,0,marker='s',color='k',markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0,path_effects=[pe.Stroke(linewidth=2,foreground='w'),pe.Normal()],zorder=10)
+	ax1.errorbar(At,float(numpy.median(Spannung[indBruch-5:indBruch])),marker='s',color='k',markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0,path_effects=[pe.Stroke(linewidth=2,foreground='w'),pe.Normal()],zorder=10)
 
-	ax1.plot(Dehnung[numpy.where(Dehnung<=Abruch*1.5)],Spannung[numpy.where(Dehnung<=Abruch*1.5)],'k',linewidth=0.5,path_effects=[pe.Stroke(linewidth=1,foreground='white'),pe.Normal()])
+	ax1.plot(Dehnung[numpy.where(Dehnung<=At*1.5)],Spannung[numpy.where(Dehnung<=At*1.5)],'k',linewidth=0.5,path_effects=[pe.Stroke(linewidth=1,foreground='white'),pe.Normal()])
 
-	ax1.set_xlim([-max(Dehnung[numpy.where(Dehnung<=Abruch*1.5)])*0.05,max(Dehnung[numpy.where(Dehnung<=Abruch*1.5)])*1.05])
+	ax1.set_xlim([-max(Dehnung[numpy.where(Dehnung<=At*1.5)])*0.05,max(Dehnung[numpy.where(Dehnung<=At*1.5)])*1.05])
 	ax1.set_ylim([-R*0.05,R*1.1])
 
 	ax1.set_xlabel(r'$\epsilon/1$',fontsize=10)
@@ -101,7 +101,7 @@ def mech(i):
 	plt.savefig(filename+'.png',dpi=600)
 	plt.close('all')
 
-	return filename,R,A,E,W,Ag,Wpl
+	return filename,R,A,E,W,Ag,At,Wpl
 
 ray.init()
 data=ray.get([mech.remote(i) for i in files])

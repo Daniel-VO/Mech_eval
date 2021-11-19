@@ -21,8 +21,8 @@ data=numpy.load('data.npy')
 nameslist=[]
 for n,value in enumerate(data):
 	print(value[0])
-	nameslist.append(value[0].split('/')[1][:-3])
-	print(value[0].split('/')[1][:-3])
+	nameslist.append(value[0])
+	print(value[0])
 
 def common_elements(list1, list2):
 	return list(set(list1) & set(list2))
@@ -37,16 +37,18 @@ for m,name in enumerate(samples):
 	E=numpy.array([])
 	W=numpy.array([])
 	Ag=numpy.array([])
+	At=numpy.array([])
 	Wpl=numpy.array([])
 	for n,value in enumerate(data):
-		if value[0].split('/')[1][:-3]==name:
+		if value[0]==name:
 			R=numpy.append(R,float(value[1]))
 			A=numpy.append(A,float(value[2]))
 			E=numpy.append(E,float(value[3]))
 			W=numpy.append(W,float(value[4]))
 			Ag=numpy.append(Ag,float(value[5]))
-			Wpl=numpy.append(Wpl,float(value[6]))
-	sampledata.append([name.replace('_','-'),'R:',numpy.average(R),'pm',numpy.std(R),'A:',numpy.average(A),'pm',numpy.std(A),'E:',numpy.average(E),'pm',numpy.std(E),'W:',numpy.average(W),'pm',numpy.std(W),'Ag:',numpy.average(Ag),'pm',numpy.std(Ag),'Wpl:',numpy.average(Wpl),'pm',numpy.std(Wpl)])
+			At=numpy.append(Ag,float(value[6]))
+			Wpl=numpy.append(Wpl,float(value[7]))
+	sampledata.append([name.replace('_','-'),'R:',numpy.average(R),'pm',numpy.std(R),'A:',numpy.average(A),'pm',numpy.std(A),'E:',numpy.average(E),'pm',numpy.std(E),'W:',numpy.average(W),'pm',numpy.std(W),'Ag:',numpy.average(Ag),'pm',numpy.std(Ag),'At:',numpy.average(At),'pm',numpy.std(At),'Wpl:',numpy.average(Wpl),'pm',numpy.std(Wpl)])
 
 with open('Read.log','a') as e:
 	for s in sampledata:
@@ -65,6 +67,8 @@ Wplot=[]
 Wstdplot=[]
 Agplot=[]
 Agstdplot=[]
+Atplot=[]
+Atstdplot=[]
 Wplplot=[]
 Wplstdplot=[]
 for s in samples:	#Probensaetze
@@ -81,8 +85,10 @@ for s in samples:	#Probensaetze
 			Wstdplot.append(sampledata[m][16])
 			Agplot.append(sampledata[m][18])
 			Agstdplot.append(sampledata[m][20])
-			Wplplot.append(sampledata[m][22])
-			Wplstdplot.append(sampledata[m][24])
+			Atplot.append(sampledata[m][22])
+			Atstdplot.append(sampledata[m][24])
+			Wplplot.append(sampledata[m][26])
+			Wplstdplot.append(sampledata[m][28])
 			xlabel=r'$\rm{Probe}$'
 
 ########################################################################
@@ -118,6 +124,7 @@ fig,ax1=plt.subplots(figsize=(7.5/2.54,5.3/2.54))
 
 ax1.errorbar(nameplot,Aplot,marker='s',color='k',yerr=Astdplot,markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0)
 ax1.errorbar(nameplot,Agplot,marker='o',color='k',yerr=Agstdplot,markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0)
+ax1.errorbar(nameplot,Atplot,marker='^',color='k',yerr=Agstdplot,markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0)
 
 # ~ ax1.set_xlabel(xlabel,fontsize=10)
 plt.setp(ax1.xaxis.get_majorticklabels(),rotation=45,ha='right',rotation_mode='anchor')
