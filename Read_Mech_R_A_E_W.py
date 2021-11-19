@@ -16,7 +16,7 @@ from scipy import stats
 os.system('mv Read.log Read.alt')
 
 data=numpy.load('data.npy')
-#[filename,R,A,E,W,Ag,Wt]
+#[filename,R,E,A,W,Ag,At,Wt]
 
 nameslist=[]
 for n,value in enumerate(data):
@@ -33,8 +33,8 @@ sampledata=[]
 
 for m,name in enumerate(samples):
 	R=numpy.array([])
-	A=numpy.array([])
 	E=numpy.array([])
+	A=numpy.array([])
 	W=numpy.array([])
 	Ag=numpy.array([])
 	At=numpy.array([])
@@ -42,13 +42,13 @@ for m,name in enumerate(samples):
 	for n,value in enumerate(data):
 		if value[0]==name:
 			R=numpy.append(R,float(value[1]))
-			A=numpy.append(A,float(value[2]))
-			E=numpy.append(E,float(value[3]))
+			E=numpy.append(E,float(value[2]))
+			A=numpy.append(A,float(value[3]))
 			W=numpy.append(W,float(value[4]))
 			Ag=numpy.append(Ag,float(value[5]))
 			At=numpy.append(Ag,float(value[6]))
 			Wt=numpy.append(Wt,float(value[7]))
-	sampledata.append([name.replace('_','-'),'R:',numpy.average(R),'pm',numpy.std(R),'A:',numpy.average(A),'pm',numpy.std(A),'E:',numpy.average(E),'pm',numpy.std(E),'W:',numpy.average(W),'pm',numpy.std(W),'Ag:',numpy.average(Ag),'pm',numpy.std(Ag),'At:',numpy.average(At),'pm',numpy.std(At),'Wt:',numpy.average(Wt),'pm',numpy.std(Wt)])
+	sampledata.append([name.replace('_','-'),'R:',numpy.average(R),'pm',numpy.std(R),'E:',numpy.average(E),'pm',numpy.std(E),'A:',numpy.average(A),'pm',numpy.std(A),'W:',numpy.average(W),'pm',numpy.std(W),'Ag:',numpy.average(Ag),'pm',numpy.std(Ag),'At:',numpy.average(At),'pm',numpy.std(At),'Wt:',numpy.average(Wt),'pm',numpy.std(Wt)])
 
 with open('Read.log','a') as e:
 	for s in sampledata:
@@ -57,12 +57,10 @@ with open('Read.log','a') as e:
 nameplot=[]
 Rplot=[]
 Rstdplot=[]
-Aplot=[]
-Astdplot=[]
 Eplot=[]
 Estdplot=[]
-Econfloplot=[]
-Econfupplot=[]
+Aplot=[]
+Astdplot=[]
 Wplot=[]
 Wstdplot=[]
 Agplot=[]
@@ -77,10 +75,10 @@ for s in samples:	#Probensaetze
 			nameplot.append(r'$\rm{'+s+'}$')
 			Rplot.append(sampledata[m][2])
 			Rstdplot.append(sampledata[m][4])
-			Aplot.append(sampledata[m][6])
-			Astdplot.append(sampledata[m][8])
-			Eplot.append(sampledata[m][10])
-			Estdplot.append(sampledata[m][12])
+			Eplot.append(sampledata[m][6])
+			Estdplot.append(sampledata[m][8])
+			Aplot.append(sampledata[m][10])
+			Astdplot.append(sampledata[m][12])
 			Wplot.append(sampledata[m][14])
 			Wstdplot.append(sampledata[m][16])
 			Agplot.append(sampledata[m][18])
@@ -115,6 +113,31 @@ plt.savefig('R.pdf',transparent=True)
 plt.savefig('R.png',dpi=600)
 plt.close('all')
 
+
+########################################################################
+
+plt.clf()
+mpl.rc('text',usetex=True)
+mpl.rc('text.latex',preamble=r'\usepackage[helvet]{sfmath}')
+fig,ax1=plt.subplots(figsize=(7.5/2.54,5.3/2.54))
+
+ax1.errorbar(nameplot,Eplot,marker='s',color='k',yerr=Estdplot,markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0)
+
+# ~ ax1.set_xlabel(xlabel,fontsize=10)
+plt.setp(ax1.xaxis.get_majorticklabels(),rotation=45,ha='right',rotation_mode='anchor')
+ax1.set_ylabel(r'$E/\rm{Pa}$',fontsize=10)
+ax1.tick_params(direction='out')
+ax1.tick_params(axis='x',pad=2,labelsize=8)
+ax1.tick_params(axis='y',pad=2,labelsize=8)
+# ~ ax1.set_yscale('log')
+ax1.ticklabel_format(style='sci',axis='y',scilimits=(-3,3))
+ax1.xaxis.get_offset_text().set_size(8)
+ax1.yaxis.get_offset_text().set_size(8)
+plt.tight_layout(pad=0.1)
+plt.savefig('E.pdf',transparent=True)
+plt.savefig('E.png',dpi=600)
+plt.close('all')
+
 ########################################################################
 
 plt.clf()
@@ -139,30 +162,6 @@ ax1.yaxis.get_offset_text().set_size(8)
 plt.tight_layout(pad=0.1)
 plt.savefig('A.pdf',transparent=True)
 plt.savefig('A.png',dpi=600)
-plt.close('all')
-
-########################################################################
-
-plt.clf()
-mpl.rc('text',usetex=True)
-mpl.rc('text.latex',preamble=r'\usepackage[helvet]{sfmath}')
-fig,ax1=plt.subplots(figsize=(7.5/2.54,5.3/2.54))
-
-ax1.errorbar(nameplot,Eplot,marker='s',color='k',yerr=Estdplot,markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0)
-
-# ~ ax1.set_xlabel(xlabel,fontsize=10)
-plt.setp(ax1.xaxis.get_majorticklabels(),rotation=45,ha='right',rotation_mode='anchor')
-ax1.set_ylabel(r'$E/\rm{Pa}$',fontsize=10)
-ax1.tick_params(direction='out')
-ax1.tick_params(axis='x',pad=2,labelsize=8)
-ax1.tick_params(axis='y',pad=2,labelsize=8)
-# ~ ax1.set_yscale('log')
-ax1.ticklabel_format(style='sci',axis='y',scilimits=(-3,3))
-ax1.xaxis.get_offset_text().set_size(8)
-ax1.yaxis.get_offset_text().set_size(8)
-plt.tight_layout(pad=0.1)
-plt.savefig('E.pdf',transparent=True)
-plt.savefig('E.png',dpi=600)
 plt.close('all')
 
 ########################################################################

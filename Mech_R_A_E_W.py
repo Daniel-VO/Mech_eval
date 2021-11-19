@@ -101,7 +101,7 @@ def mech(i):
 	plt.savefig(filename+'.png',dpi=600)
 	plt.close('all')
 
-	return filename,R,A,E,W,Ag,At,Wt
+	return filename,R,E,A,W,Ag,At,Wt
 
 ray.init()
 data=ray.get([mech.remote(i) for i in files])
