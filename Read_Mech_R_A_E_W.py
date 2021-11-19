@@ -177,7 +177,7 @@ ax1.errorbar(nameplot,Wtplot,marker='^',color='k',yerr=Wtstdplot,markersize=1,el
 
 # ~ ax1.set_xlabel(xlabel,fontsize=10)
 plt.setp(ax1.xaxis.get_majorticklabels(),rotation=45,ha='right',rotation_mode='anchor')
-ax1.set_ylabel(r'$W_{\rm{f}}/(\rm{J\cdot m}^{-3})$',fontsize=10)
+ax1.set_ylabel(r'$W/(\rm{J\cdot m}^{-3})$',fontsize=10)
 ax1.tick_params(direction='out')
 ax1.tick_params(axis='x',pad=2,labelsize=8)
 ax1.tick_params(axis='y',pad=2,labelsize=8)
