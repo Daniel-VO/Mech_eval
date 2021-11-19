@@ -16,7 +16,7 @@ from scipy import stats
 os.system('mv Read.log Read.alt')
 
 data=numpy.load('data.npy')
-#[filename,R,A,E,W,Ag,Wpl]
+#[filename,R,A,E,W,Ag,Wt]
 
 nameslist=[]
 for n,value in enumerate(data):
@@ -38,7 +38,7 @@ for m,name in enumerate(samples):
 	W=numpy.array([])
 	Ag=numpy.array([])
 	At=numpy.array([])
-	Wpl=numpy.array([])
+	Wt=numpy.array([])
 	for n,value in enumerate(data):
 		if value[0]==name:
 			R=numpy.append(R,float(value[1]))
@@ -47,8 +47,8 @@ for m,name in enumerate(samples):
 			W=numpy.append(W,float(value[4]))
 			Ag=numpy.append(Ag,float(value[5]))
 			At=numpy.append(Ag,float(value[6]))
-			Wpl=numpy.append(Wpl,float(value[7]))
-	sampledata.append([name.replace('_','-'),'R:',numpy.average(R),'pm',numpy.std(R),'A:',numpy.average(A),'pm',numpy.std(A),'E:',numpy.average(E),'pm',numpy.std(E),'W:',numpy.average(W),'pm',numpy.std(W),'Ag:',numpy.average(Ag),'pm',numpy.std(Ag),'At:',numpy.average(At),'pm',numpy.std(At),'Wpl:',numpy.average(Wpl),'pm',numpy.std(Wpl)])
+			Wt=numpy.append(Wt,float(value[7]))
+	sampledata.append([name.replace('_','-'),'R:',numpy.average(R),'pm',numpy.std(R),'A:',numpy.average(A),'pm',numpy.std(A),'E:',numpy.average(E),'pm',numpy.std(E),'W:',numpy.average(W),'pm',numpy.std(W),'Ag:',numpy.average(Ag),'pm',numpy.std(Ag),'At:',numpy.average(At),'pm',numpy.std(At),'Wt:',numpy.average(Wt),'pm',numpy.std(Wt)])
 
 with open('Read.log','a') as e:
 	for s in sampledata:
@@ -69,8 +69,8 @@ Agplot=[]
 Agstdplot=[]
 Atplot=[]
 Atstdplot=[]
-Wplplot=[]
-Wplstdplot=[]
+Wtplot=[]
+Wtstdplot=[]
 for s in samples:	#Probensaetze
 	for m,name in enumerate(sampledata):
 		if s in sampledata[m][0]:
@@ -87,8 +87,8 @@ for s in samples:	#Probensaetze
 			Agstdplot.append(sampledata[m][20])
 			Atplot.append(sampledata[m][22])
 			Atstdplot.append(sampledata[m][24])
-			Wplplot.append(sampledata[m][26])
-			Wplstdplot.append(sampledata[m][28])
+			Wtplot.append(sampledata[m][26])
+			Wtstdplot.append(sampledata[m][28])
 			xlabel=r'$\rm{Probe}$'
 
 ########################################################################
@@ -173,7 +173,7 @@ mpl.rc('text.latex',preamble=r'\usepackage[helvet]{sfmath}')
 fig,ax1=plt.subplots(figsize=(7.5/2.54,5.3/2.54))
 
 ax1.errorbar(nameplot,Wplot,marker='s',color='k',yerr=Wstdplot,markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0)
-ax1.errorbar(nameplot,Wplplot,marker='o',color='k',yerr=Wplstdplot,markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0)
+ax1.errorbar(nameplot,Wtplot,marker='^',color='k',yerr=Wtstdplot,markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0)
 
 # ~ ax1.set_xlabel(xlabel,fontsize=10)
 plt.setp(ax1.xaxis.get_majorticklabels(),rotation=45,ha='right',rotation_mode='anchor')

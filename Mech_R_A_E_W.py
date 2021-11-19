@@ -61,10 +61,10 @@ def mech(i):
 	Ag=Agt-R/E
 	A=At-float(numpy.median(Spannung[indBruch-5:indBruch]))/E
 
-	W=numpy.trapz(Spannung[:indBruch],x=Dehnung[:indBruch])
-	Wpl=W-R**2/E/2
+	Wt=numpy.trapz(Spannung[:indBruch],x=Dehnung[:indBruch])
+	W=Wt-R**2/E/2
 
-	print(filename,'R',R,'A',A,'E',E,'W',W,'Ag',Ag,'Wpl',Wpl)
+	print(filename,'R',R,'A',A,'E',E,'W',W,'Ag',Ag,'Wt',Wt)
 
 	plt.clf()
 	mpl.rc('text',usetex=True)
@@ -101,7 +101,7 @@ def mech(i):
 	plt.savefig(filename+'.png',dpi=600)
 	plt.close('all')
 
-	return filename,R,A,E,W,Ag,At,Wpl
+	return filename,R,A,E,W,Ag,At,Wt
 
 ray.init()
 data=ray.get([mech.remote(i) for i in files])
