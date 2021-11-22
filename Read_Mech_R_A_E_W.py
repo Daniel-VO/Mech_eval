@@ -55,13 +55,13 @@ for name in samples:
 			At=numpy.append(Ag,float(value[6]))
 			Wt=numpy.append(Wt,float(value[7]))
 	nameplot.append(name.replace('_','-'))
-	Rplot.append(uq(numpy.average(R),pq.Pa,numpy.std(R)))
-	Eplot.append(uq(numpy.average(E),pq.Pa,numpy.std(E)))
-	Aplot.append(uq(numpy.average(A),pq.dimensionless,numpy.std(A)))
-	Wplot.append(uq(numpy.average(W),pq.J/pq.m**3,numpy.std(W)))
-	Agplot.append(uq(numpy.average(Ag),pq.dimensionless,numpy.std(Ag)))
-	Atplot.append(uq(numpy.average(At),pq.dimensionless,numpy.std(At)))
-	Wtplot.append(uq(numpy.average(Wt),pq.J/pq.m**3,numpy.std(Wt)))
+	Rplot.append(uq(numpy.median(R),pq.Pa,scipy.stats.median_abs_deviation(R)))
+	Eplot.append(uq(numpy.median(E),pq.Pa,scipy.stats.median_abs_deviation(E)))
+	Aplot.append(uq(numpy.median(A),pq.dimensionless,scipy.stats.median_abs_deviation(A)))
+	Wplot.append(uq(numpy.median(W),pq.J/pq.m**3,scipy.stats.median_abs_deviation(W)))
+	Agplot.append(uq(numpy.median(Ag),pq.dimensionless,scipy.stats.median_abs_deviation(Ag)))
+	Atplot.append(uq(numpy.median(At),pq.dimensionless,scipy.stats.median_abs_deviation(At)))
+	Wtplot.append(uq(numpy.median(Wt),pq.J/pq.m**3,scipy.stats.median_abs_deviation(Wt)))
 
 with open('Read.log','a') as e:
 	for s,values in enumerate(nameplot):
