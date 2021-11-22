@@ -6,15 +6,14 @@ This program is free software: you can redistribute it and/or modify it under th
 
 import numpy
 import glob
-import os
-import ray
-import sys
-import fnmatch
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 from scipy import signal
 from scipy import stats
 import matplotlib.patheffects as pe
+import os
+import ray
+import sys
 
 def conv(t):
 	return t.replace(',','.')
@@ -33,7 +32,7 @@ def mech(i):
 	Spannung=(Spannung_MPa-Spannung_MPa[0])*1e6
 	Dehnung=(Dehnung_perc-Dehnung_perc[0])/1e2
 
-	Punkte=100		#Punkte pro Segment zur Bestimmung von E
+	Punkte=20		#Punkte pro Segment zur Bestimmung von E
 
 	R=max(Spannung)
 
