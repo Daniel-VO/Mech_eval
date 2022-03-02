@@ -1,11 +1,12 @@
 """
-Created 22. November by Daniel Van Opdenbosch, Technical University of Munich
+Created 02. March 2022 by Daniel Van Opdenbosch, Technical University of Munich
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. It is distributed without any warranty or implied warranty of merchantability or fitness for a particular purpose. See the GNU general public license for more details: <http://www.gnu.org/licenses/>
 """
 
 import numpy
 import glob
+import os
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 from scipy import signal
@@ -15,7 +16,7 @@ from quantities import UncertainQuantity as uq
 
 os.system('mv Read.log Read.alt')
 
-data=numpy.load('data.npy')
+data=numpy.load('data.npy',allow_pickle=True)
 #[filename,R,E,A,W,Ag,At,Wt]
 
 nameslist=[]
@@ -55,13 +56,13 @@ for name in samples:
 			At=numpy.append(Ag,float(value[6]))
 			Wt=numpy.append(Wt,float(value[7]))
 	nameplot.append(name.replace('_','-'))
-	Rplot.append(uq(numpy.median(R),pq.Pa,scipy.stats.median_abs_deviation(R)))
-	Eplot.append(uq(numpy.median(E),pq.Pa,scipy.stats.median_abs_deviation(E)))
-	Aplot.append(uq(numpy.median(A),pq.dimensionless,scipy.stats.median_abs_deviation(A)))
-	Wplot.append(uq(numpy.median(W),pq.J/pq.m**3,scipy.stats.median_abs_deviation(W)))
-	Agplot.append(uq(numpy.median(Ag),pq.dimensionless,scipy.stats.median_abs_deviation(Ag)))
-	Atplot.append(uq(numpy.median(At),pq.dimensionless,scipy.stats.median_abs_deviation(At)))
-	Wtplot.append(uq(numpy.median(Wt),pq.J/pq.m**3,scipy.stats.median_abs_deviation(Wt)))
+	Rplot.append(uq(numpy.median(R),pq.Pa,stats.median_abs_deviation(R)))
+	Eplot.append(uq(numpy.median(E),pq.Pa,stats.median_abs_deviation(E)))
+	Aplot.append(uq(numpy.median(A),pq.dimensionless,stats.median_abs_deviation(A)))
+	Wplot.append(uq(numpy.median(W),pq.J/pq.m**3,stats.median_abs_deviation(W)))
+	Agplot.append(uq(numpy.median(Ag),pq.dimensionless,stats.median_abs_deviation(Ag)))
+	Atplot.append(uq(numpy.median(At),pq.dimensionless,stats.median_abs_deviation(At)))
+	Wtplot.append(uq(numpy.median(Wt),pq.J/pq.m**3,stats.median_abs_deviation(Wt)))
 
 with open('Read.log','a') as e:
 	for s,values in enumerate(nameplot):

@@ -1,5 +1,5 @@
 """
-Created 19. November 2021 by Daniel Van Opdenbosch, Technical University of Munich
+Created 02. March 2022 by Daniel Van Opdenbosch, Technical University of Munich
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. It is distributed without any warranty or implied warranty of merchantability or fitness for a particular purpose. See the GNU general public license for more details: <http://www.gnu.org/licenses/>
 """
@@ -24,11 +24,11 @@ sys.stdout=open('Results.log','a')
 files=glob.glob('*[!_alt].txt',recursive=True)
 
 @ray.remote
-def mech(i):
-	filename=os.path.splitext(i)[0]
+def mech(f):
+	filename=os.path.splitext(f)[0].split('/')[-1]
 	print(filename)
 
-	Zeit_s,Kraft_N,Weg_mm,Spannung_MPa,Dehnung_perc=numpy.genfromtxt((conv(t) for t in open(i)),delimiter='\t',unpack=True,skip_header=1,skip_footer=0,usecols=range(5))
+	Zeit_s,Kraft_N,Weg_mm,Spannung_MPa,Dehnung_perc=numpy.genfromtxt((conv(t) for t in open(f)),delimiter='\t',unpack=True,skip_header=1,skip_footer=0,usecols=range(5))
 	Spannung=(Spannung_MPa-Spannung_MPa[0])*1e6
 	Dehnung=(Dehnung_perc-Dehnung_perc[0])/1e2
 
@@ -63,7 +63,7 @@ def mech(i):
 	Wt=numpy.trapz(Spannung[:indBruch],x=Dehnung[:indBruch])
 	W=Wt-R**2/E/2
 
-	print(filename,'R',R,'A',A,'E',E,'W',W,'Ag',Ag,'Wt',Wt)
+	print(filename,'R',R,'A',A,'E',E,'W',W,'Ag',Ag,'At',At,'Wt',Wt)
 
 	plt.clf()
 	mpl.rc('text',usetex=True)
@@ -96,14 +96,14 @@ def mech(i):
 	ax1.xaxis.get_offset_text().set_size(8)
 	ax1.yaxis.get_offset_text().set_size(8)
 	plt.tight_layout(pad=0.1)
-	plt.savefig(filename+'.pdf',transparent=True)
-	plt.savefig(filename+'.png',dpi=600)
+	plt.savefig(str(os.path.splitext(f)[0])+'.pdf',transparent=True)
+	plt.savefig(str(os.path.splitext(f)[0])+'.png',dpi=600)
 	plt.close('all')
 
 	return filename,R,E,A,W,Ag,At,Wt
 
 ray.init()
-data=ray.get([mech.remote(i) for i in files])
+data=ray.get([mech.remote(f) for f in files])
 
-numpy.save('data.npy',data,allow_pickle=True)
-os.system('python3 Read_Mech_R_E_A_W.py')
+numpy.save('data.npy',data)
+os.system('python3 read_Mech_R_E_A_W.py')
