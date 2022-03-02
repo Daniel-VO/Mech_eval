@@ -7,15 +7,13 @@ This program is free software: you can redistribute it and/or modify it under th
 import numpy
 import glob
 import os
-import ray
-import sys
+import quantities as pq
+from quantities import UncertainQuantity as uq
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import matplotlib.patheffects as pe
 from scipy import signal
 from scipy import stats
-import quantities as pq
-from quantities import UncertainQuantity as uq
 
 os.system('mv Read.log Read.alt')
 
