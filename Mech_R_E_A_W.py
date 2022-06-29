@@ -1,5 +1,5 @@
 """
-Created 02. June 2022 by Daniel Van Opdenbosch, Technical University of Munich
+Created 29. June 2022 by Daniel Van Opdenbosch, Technical University of Munich
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. It is distributed without any warranty or implied warranty of merchantability or fitness for a particular purpose. See the GNU general public license for more details: <http://www.gnu.org/licenses/>
 """
@@ -33,6 +33,7 @@ def mech(f):
 	Dehnung=(Dehnung_perc-Dehnung_perc[0])/1e2
 
 	Punkte=20		#Punkte pro Segment zur Bestimmung von E
+	Dehngrenze=2e-4
 
 	R=max(Spannung)
 
@@ -53,6 +54,8 @@ def mech(f):
 	Spannung=Spannung[numpy.where(Dehnung>0)]
 	Dehnung=Dehnung[numpy.where(Dehnung>0)]
 
+	Re=Spannung[numpy.where(Dehnung-Spannung/E>Dehngrenze)][0]
+
 	indBruch=numpy.where(Spannung>=R/10)[-1][-1]
 	Agt=float(Dehnung[numpy.where(Spannung==R)][0])
 	At=float(Dehnung[indBruch])
@@ -63,7 +66,7 @@ def mech(f):
 	Wt=numpy.trapz(Spannung[:indBruch],x=Dehnung[:indBruch])
 	W=Wt-R**2/E/2
 
-	print(filename,'R',R,'E',E,'A',A,'W',W,'Ag',Ag,'At',At,'Wt',Wt)
+	print(filename,'R',R,'E',E,'A',A,'W',W,'Re',R,'Ag',Ag,'At',At,'Wt',Wt)
 
 	plt.clf()
 	mpl.rc('text',usetex=True)
@@ -73,6 +76,10 @@ def mech(f):
 	ax1.plot(Dehnung,Dehnung*E,'k',linewidth=0.5,path_effects=[pe.Stroke(linewidth=1,foreground='white'),pe.Normal()])
 	ax1.plot(Dehnung,Dehnung*Econflo,'k:',linewidth=0.5,path_effects=[pe.Stroke(linewidth=1,foreground='white'),pe.Normal()])
 	ax1.plot(Dehnung,Dehnung*Econfup,'k:',linewidth=0.5,path_effects=[pe.Stroke(linewidth=1,foreground='white'),pe.Normal()])
+
+	ax1.plot(Dehnung+Dehngrenze,Dehnung*E,'k--',linewidth=0.5,path_effects=[pe.Stroke(linewidth=1,foreground='white'),pe.Normal()])
+	ax1.errorbar(Dehngrenze,0,marker='s',color='k',markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0,path_effects=[pe.Stroke(linewidth=2,foreground='w'),pe.Normal()],zorder=10)
+	ax1.errorbar(Dehngrenze+Re/E,Re,marker='s',color='k',markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0,path_effects=[pe.Stroke(linewidth=2,foreground='w'),pe.Normal()],zorder=10)
 
 	ax1.plot(Dehnung+Agt-R/E,Dehnung*E,'k--',linewidth=0.5,path_effects=[pe.Stroke(linewidth=1,foreground='white'),pe.Normal()])
 	ax1.errorbar(Agt-R/E,0,marker='s',color='k',markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0,path_effects=[pe.Stroke(linewidth=2,foreground='w'),pe.Normal()],zorder=10)
@@ -100,7 +107,7 @@ def mech(f):
 	plt.savefig(str(os.path.splitext(f)[0])+'.png',dpi=600)
 	plt.close('all')
 
-	return filename,R,E,A,W,Ag,At,Wt
+	return filename,R,E,A,W,Re,Ag,At,Wt
 
 data=ray.get([mech.remote(f) for f in files])
 
