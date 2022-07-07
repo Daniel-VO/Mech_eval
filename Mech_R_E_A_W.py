@@ -1,5 +1,5 @@
 """
-Created 29. June 2022 by Daniel Van Opdenbosch, Technical University of Munich
+Created 07. July 2022 by Daniel Van Opdenbosch, Technical University of Munich
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. It is distributed without any warranty or implied warranty of merchantability or fitness for a particular purpose. See the GNU general public license for more details: <http://www.gnu.org/licenses/>
 """
@@ -15,6 +15,17 @@ import matplotlib.patheffects as pe
 from scipy import signal
 from scipy import stats
 
+Punkte=100		#Punkte pro Segment zur Bestimmung von E
+Dehngrenze=2e-4	#
+
+#Groessen aus DIN 527
+b1=0	#Probenbreite, wenn 0: alpha-Korrektur AUS
+b2=10	#Einspannbreite
+L=58	#Einspannlaenge
+r=30	#Radius der Fase
+x=numpy.linspace(r,0,1000000)
+alpha=b1/L*numpy.trapz(1/(b2-2*(r**2-(r-x)**2)**0.5),x)
+
 def conv(t):
 	return t.replace(',','.')
 
@@ -29,11 +40,8 @@ def mech(f):
 	print(filename)
 
 	Zeit_s,Kraft_N,Weg_mm,Spannung_MPa,Dehnung_perc=numpy.genfromtxt((conv(t) for t in open(f)),delimiter='\t',unpack=True,skip_header=1,skip_footer=0,usecols=range(5))
-	Spannung=(Spannung_MPa-Spannung_MPa[0])*1e6
+	Spannung=(Spannung_MPa-Spannung_MPa[0])*1e6*(2*alpha+1)
 	Dehnung=(Dehnung_perc-Dehnung_perc[0])/1e2
-
-	Punkte=20		#Punkte pro Segment zur Bestimmung von E
-	Dehngrenze=2e-4
 
 	R=max(Spannung)
 
