@@ -19,10 +19,12 @@ Punkte=100		#Punkte pro Segment zur Bestimmung von E
 Dehngrenze=2e-4	#
 
 #Groessen aus DIN 527
-b1=0	#Probenbreite, wenn 0: alpha-Korrektur AUS
-b2=10	#Einspannbreite
-L=58	#Einspannlaenge
-r=30	#Radius der Fase
+h=2e-3		#Probendicke
+b1=5e-3		#Probenbreite
+b2=10e-3	#Einspannbreite
+L=58e-3		#Einspannlaenge
+L0=25e-3	#Messlaenge
+r=30e-3		#Radius der Fase
 x=numpy.linspace(r,0,1000000)
 alpha=b1/L*numpy.trapz(1/(b2-2*(r**2-(r-x)**2)**0.5),x)
 
@@ -43,6 +45,11 @@ def mech(f):
 	Spannung=Spannung_MPa*1e6*(2*alpha+1)
 	Dehnung=Dehnung_perc/1e2
 
+	Spannung=Kraft_N/(h*b1)
+	Dehnung=Weg_mm/(L0+Weg_mm[numpy.where(Kraft_N>0)][0])
+
+	Spannung,Dehnung=Spannung[numpy.where(Spannung>0)],Dehnung[numpy.where(Spannung>0)]-Dehnung[numpy.where(Spannung>0)][0]
+
 	R=max(Spannung)	#Punkte=int(numpy.where(Spannung==R)[0][0]/5)
 
 	Agt0=float(Dehnung[numpy.where(Spannung==R)][0])
@@ -59,8 +66,7 @@ def mech(f):
 	Econfup=theil[3]
 
 	Dehnung+=disp/E
-	Spannung=Spannung[numpy.where(Dehnung>0)]
-	Dehnung=Dehnung[numpy.where(Dehnung>0)]
+	Spannung,Dehnung=Spannung[numpy.where(Dehnung>0)],Dehnung[numpy.where(Dehnung>0)]
 
 	Re=Spannung[numpy.where(Dehnung-Spannung/E>Dehngrenze)][0]
 
