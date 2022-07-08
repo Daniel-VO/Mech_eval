@@ -37,7 +37,7 @@ sys.stdout=open('Results.log','a')
 files=glob.glob('*[!_corr].txt',recursive=True)
 
 @ray.remote
-def mech(f):
+def mech(f,Dehngrenze):
 	filename=os.path.splitext(f)[0].split('/')[-1]
 	print(filename)
 
@@ -65,14 +65,16 @@ def mech(f):
 	Dehnung+=disp/E
 	Spannung,Dehnung=Spannung[numpy.where(Dehnung>0)],Dehnung[numpy.where(Dehnung>0)]
 
-	Re=Spannung[numpy.where(Dehnung-Spannung/E>Dehngrenze)][0]
-
 	indBruch=numpy.where(Spannung>=R/10)[-1][-1]
 	Agt=float(Dehnung[numpy.where(Spannung==R)][0])
 	At=float(Dehnung[indBruch])
 
 	Ag=Agt-R/E
 	A=At-float(numpy.median(Spannung[indBruch-5:indBruch]))/E
+
+	if Ag>Dehngrenze:
+		Dehngrenze=Ag
+	Re=Spannung[numpy.where(Dehnung-Spannung/E>=Dehngrenze)][0]
 
 	Wt=numpy.trapz(Spannung[:indBruch],x=Dehnung[:indBruch])
 	W=Wt-R**2/E/2
@@ -121,7 +123,7 @@ def mech(f):
 
 	return filename,R,E,A,W,Re,Ag,At,Wt
 
-data=ray.get([mech.remote(f) for f in files])
+data=ray.get([mech.remote(f,Dehngrenze) for f in files])
 
 numpy.save('data.npy',data)
 os.system('python3 read_Mech_R_E_A_W.py')
