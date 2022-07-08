@@ -1,5 +1,5 @@
 """
-Created 07. July 2022 by Daniel Van Opdenbosch, Technical University of Munich
+Created 08. July 2022 by Daniel Van Opdenbosch, Technical University of Munich
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. It is distributed without any warranty or implied warranty of merchantability or fitness for a particular purpose. See the GNU general public license for more details: <http://www.gnu.org/licenses/>
 """
@@ -40,10 +40,10 @@ def mech(f):
 	print(filename)
 
 	Zeit_s,Kraft_N,Weg_mm,Spannung_MPa,Dehnung_perc=numpy.genfromtxt((conv(t) for t in open(f)),delimiter='\t',unpack=True,skip_header=1,skip_footer=0,usecols=range(5))
-	Spannung=(Spannung_MPa-Spannung_MPa[0])*1e6*(2*alpha+1)
-	Dehnung=(Dehnung_perc-Dehnung_perc[0])/1e2
+	Spannung=Spannung_MPa*1e6*(2*alpha+1)
+	Dehnung=Dehnung_perc/1e2
 
-	R=max(Spannung)
+	R=max(Spannung)	#Punkte=int(numpy.where(Spannung==R)[0][0]/5)
 
 	Agt0=float(Dehnung[numpy.where(Spannung==R)][0])
 	steps=len(Dehnung[numpy.where(Dehnung<Agt0)])//Punkte
