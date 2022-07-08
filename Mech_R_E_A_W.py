@@ -34,7 +34,7 @@ def conv(t):
 os.system('mv Results.log Results.alt')
 sys.stdout=open('Results.log','a')
 
-files=glob.glob('*[!_alt].txt',recursive=True)
+files=glob.glob('*[!_corr].txt',recursive=True)
 
 @ray.remote
 def mech(f):
@@ -78,6 +78,7 @@ def mech(f):
 	W=Wt-R**2/E/2
 
 	print(filename,'R',R,'E',E,'A',A,'W',W,'Re',R,'Ag',Ag,'At',At,'Wt',Wt)
+	numpy.savetxt(filename+'_corr.txt',numpy.transpose([Spannung,Dehnung]))
 
 	plt.clf()
 	mpl.rc('text',usetex=True)
