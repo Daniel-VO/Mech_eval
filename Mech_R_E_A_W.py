@@ -42,11 +42,8 @@ def mech(f):
 	print(filename)
 
 	Zeit_s,Kraft_N,Weg_mm,Spannung_MPa,Dehnung_perc=numpy.genfromtxt((conv(t) for t in open(f)),delimiter='\t',unpack=True,skip_header=1,skip_footer=0,usecols=range(5))
-	Spannung=Spannung_MPa*1e6*(2*alpha+1)
-	Dehnung=Dehnung_perc/1e2
-
-	Spannung=Kraft_N/(h*b1)
-	Dehnung=Weg_mm/(L0+Weg_mm[numpy.where(Kraft_N>0)][0])
+	Spannung=Kraft_N/(h*b1)*(2*alpha+1)
+	Dehnung=Weg_mm/(L0*1e3+Weg_mm[numpy.where(Kraft_N>0)][0])
 
 	Spannung,Dehnung=Spannung[numpy.where(Spannung>0)],Dehnung[numpy.where(Spannung>0)]-Dehnung[numpy.where(Spannung>0)][0]
 
