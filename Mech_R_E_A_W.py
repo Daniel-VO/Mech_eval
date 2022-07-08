@@ -73,8 +73,9 @@ def mech(f,Dehngrenze):
 	A=At-float(numpy.median(Spannung[indBruch-5:indBruch]))/E
 
 	if Ag<Dehngrenze:
-		Dehngrenze=Ag
-	Re=Spannung[numpy.where(Dehnung-Spannung/E>=Dehngrenze)][0]
+		Re=R
+	else:
+		Re=Spannung[numpy.where(Dehnung-Spannung/E>=Dehngrenze)][0]
 
 	Wt=numpy.trapz(Spannung[:indBruch],x=Dehnung[:indBruch])
 	W=Wt-R**2/E/2
