@@ -15,7 +15,6 @@ import matplotlib.patheffects as pe
 from scipy import signal
 from scipy import stats
 
-Punkte=100		#Punkte pro Segment zur Bestimmung von E
 Dehngrenze=2e-4	#
 
 #Groessen aus DIN 527
@@ -47,7 +46,8 @@ def mech(f,Dehngrenze):
 
 	Spannung,Dehnung=Spannung[numpy.where(Spannung>0)],Dehnung[numpy.where(Spannung>0)]-Dehnung[numpy.where(Spannung>0)][0]
 
-	R=max(Spannung)	#Punkte=int(numpy.where(Spannung==R)[0][0]/5)
+	R=max(Spannung)
+	Punkte=int(numpy.where(Spannung==R)[0][0]/5)
 
 	Agt0=float(Dehnung[numpy.where(Spannung==R)][0])
 	steps=len(Dehnung[numpy.where(Dehnung<Agt0)])//Punkte
