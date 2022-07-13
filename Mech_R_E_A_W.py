@@ -1,5 +1,5 @@
 """
-Created 11. July 2022 by Daniel Van Opdenbosch, Technical University of Munich
+Created 13. July 2022 by Daniel Van Opdenbosch, Technical University of Munich
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. It is distributed without any warranty or implied warranty of merchantability or fitness for a particular purpose. See the GNU general public license for more details: <http://www.gnu.org/licenses/>
 """
@@ -82,7 +82,7 @@ def mech(f,Dehngrenze):
 	W=Wt-R**2/E/2
 
 	print(filename,'R',R,'E',E,'A',A,'W',W,'Re',R,'Ag',Ag,'At',At,'Wt',Wt)
-	numpy.savetxt(filename+'_corr.txt',numpy.transpose([Spannung,Dehnung]))
+	numpy.savetxt(filename+'_corr.txt',numpy.transpose([Dehnung,Spannung]))
 
 	plt.clf()
 	mpl.rc('text',usetex=True)
