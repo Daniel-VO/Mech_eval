@@ -1,5 +1,5 @@
 """
-Created 13. July 2022 by Daniel Van Opdenbosch, Technical University of Munich
+Created 26. July 2022 by Daniel Van Opdenbosch, Technical University of Munich
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. It is distributed without any warranty or implied warranty of merchantability or fitness for a particular purpose. See the GNU general public license for more details: <http://www.gnu.org/licenses/>
 """
@@ -42,7 +42,7 @@ def mech(f,Dehngrenze):
 
 	Zeit_s,Kraft_N,Weg_mm,Spannung_MPa,Dehnung_perc=numpy.genfromtxt((conv(t) for t in open(f)),delimiter='\t',unpack=True,skip_header=1,skip_footer=0,usecols=range(5))
 	Spannung=Kraft_N/(h*b1)*(2*alpha+1)
-	Dehnung=Weg_mm/(L*1e3+Weg_mm[numpy.where(Kraft_N>0)][0])
+	Dehnung=Weg_mm/(L*1e3+(Weg_mm[numpy.where(Kraft_N>0)][0]-Weg_mm[0]))
 
 	Spannung,Dehnung=Spannung[numpy.where(Spannung>0)],Dehnung[numpy.where(Spannung>0)]-Dehnung[numpy.where(Spannung>0)][0]
 
