@@ -1,5 +1,5 @@
 """
-Created 26. July 2022 by Daniel Van Opdenbosch, Technical University of Munich
+Created 27. September 2022 by Daniel Van Opdenbosch, Technical University of Munich
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. It is distributed without any warranty or implied warranty of merchantability or fitness for a particular purpose. See the GNU general public license for more details: <http://www.gnu.org/licenses/>
 """
@@ -101,7 +101,6 @@ ax1.errorbar(nameplot,Replot.magnitude,marker='o',color='k',yerr=numpy.array(Rep
 # ~ ax1.set_yscale('log')
 plt.setp(ax1.xaxis.get_majorticklabels(),rotation=45,ha='right',rotation_mode='anchor')
 ax1.set_ylabel(r'$R/\rm{Pa}$',fontsize=10)
-ax1.tick_params(direction='out')
 ax1.tick_params(axis='x',pad=2,labelsize=8)
 ax1.tick_params(axis='y',pad=2,labelsize=8)
 ax1.ticklabel_format(style='sci',axis='y',scilimits=(-3,3))
@@ -127,7 +126,6 @@ ax1.errorbar(nameplot,Eplot.magnitude,marker='s',color='k',yerr=numpy.array(Eplo
 # ~ ax1.set_yscale('log')
 plt.setp(ax1.xaxis.get_majorticklabels(),rotation=45,ha='right',rotation_mode='anchor')
 ax1.set_ylabel(r'$E/\rm{Pa}$',fontsize=10)
-ax1.tick_params(direction='out')
 ax1.tick_params(axis='x',pad=2,labelsize=8)
 ax1.tick_params(axis='y',pad=2,labelsize=8)
 ax1.ticklabel_format(style='sci',axis='y',scilimits=(-3,3))
@@ -154,7 +152,6 @@ ax1.errorbar(nameplot,Atplot.magnitude,marker='^',color='k',yerr=numpy.array(Atp
 # ~ ax1.set_yscale('log')
 plt.setp(ax1.xaxis.get_majorticklabels(),rotation=45,ha='right',rotation_mode='anchor')
 ax1.set_ylabel(r'$A/1$',fontsize=10)
-ax1.tick_params(direction='out')
 ax1.tick_params(axis='x',pad=2,labelsize=8)
 ax1.tick_params(axis='y',pad=2,labelsize=8)
 ax1.ticklabel_format(style='sci',axis='y',scilimits=(-3,3))
@@ -180,7 +177,6 @@ ax1.errorbar(nameplot,Wtplot.magnitude,marker='^',color='k',yerr=numpy.array(Wtp
 # ~ ax1.set_yscale('log')
 plt.setp(ax1.xaxis.get_majorticklabels(),rotation=45,ha='right',rotation_mode='anchor')
 ax1.set_ylabel(r'$W/(\rm{J\cdot m}^{-3})$',fontsize=10)
-ax1.tick_params(direction='out')
 ax1.tick_params(axis='x',pad=2,labelsize=8)
 ax1.tick_params(axis='y',pad=2,labelsize=8)
 ax1.ticklabel_format(style='sci',axis='y',scilimits=(-3,3))
