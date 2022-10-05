@@ -1,5 +1,5 @@
 """
-Created 27. September 2022 by Daniel Van Opdenbosch, Technical University of Munich
+Created 05. October 2022 by Daniel Van Opdenbosch, Technical University of Munich
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. It is distributed without any warranty or implied warranty of merchantability or fitness for a particular purpose. See the GNU general public license for more details: <http://www.gnu.org/licenses/>
 """
@@ -29,7 +29,7 @@ for n,value in enumerate(data):
 def common_elements(list1, list2):
 	return list(set(list1) & set(list2))
 
-samples=sorted(common_elements(nameslist,nameslist))
+materials=sorted(common_elements(nameslist,nameslist))
 
 nameplot=[]
 Rplot=[]
@@ -40,7 +40,7 @@ Replot=[]
 Agplot=[]
 Atplot=[]
 Wtplot=[]
-for name in samples:
+for name in materials:
 	R=numpy.array([])
 	E=numpy.array([])
 	A=numpy.array([])
