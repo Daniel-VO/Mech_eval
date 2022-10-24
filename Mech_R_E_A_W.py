@@ -1,5 +1,5 @@
 """
-Created 05. October 2022 by Daniel Van Opdenbosch, Technical University of Munich
+Created 24. October 2022 by Daniel Van Opdenbosch, Technical University of Munich
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. It is distributed without any warranty or implied warranty of merchantability or fitness for a particular purpose. See the GNU general public license for more details: <http://www.gnu.org/licenses/>
 """
@@ -23,12 +23,9 @@ b1=5e-3		#Probenbreite
 b2=10e-3	#Einspannbreite
 L=58e-3		#Einspannlaenge
 L0=25e-3	#Messlaenge
-r=30e-3		#Radius der Fase
-x=numpy.linspace(r,0,1000000)
+r=(b2-b1)/2	#Radius der Fase
+x=numpy.linspace(0,r,1000000)
 alpha=b1/L*numpy.trapz(1/(b2-2*(r**2-(r-x)**2)**0.5),x)
-
-def conv(t):
-	return t.replace(',','.')
 
 os.system('mv Results.log Results.alt')
 sys.stdout=open('Results.log','a')
@@ -36,18 +33,21 @@ sys.stdout=open('Results.log','a')
 files=glob.glob('*[!_corr].txt',recursive=True)
 
 @ray.remote
-def mech(f,Dehngrenze):
+def mech(f,Dehngrenze,L,alpha):
 	filename=os.path.splitext(f)[0].split('/')[-1]
 	print(filename)
-
-	Zeit_s,Kraft_N,Weg_mm,Spannung_MPa,Dehnung_perc=numpy.genfromtxt((conv(t) for t in open(f)),delimiter='\t',unpack=True,skip_header=1,skip_footer=0,usecols=range(5))
-	Spannung=Kraft_N/(h*b1)*(2*alpha+1)
-	Dehnung=Weg_mm/(L*1e3+(Weg_mm[numpy.where(Kraft_N>0)][0]-Weg_mm[0]))
+	if 'Weg_G_mm' in str(open(f,'r').readlines()):
+		Zeit_s,Kraft_N,Weg_mm,Spannung_MPa,Dehnung_perc,Weg_F_mm,Weg_G_mm=numpy.genfromtxt((t.replace(',','.') for t in open(f)),delimiter='\t',unpack=True,skip_header=1,skip_footer=0,usecols=range(7))
+		Weg_mm,L,alpha=Weg_G_mm,L0,0
+	else:
+		Zeit_s,Kraft_N,Weg_mm,Spannung_MPa,Dehnung_perc=numpy.genfromtxt((t.replace(',','.') for t in open(f)),delimiter='\t',unpack=True,skip_header=1,skip_footer=0,usecols=range(5))
+	Spannung=Kraft_N/(h*b1)
+	Dehnung=Weg_mm/(L*1e3+(Weg_mm[numpy.where(Kraft_N>0)][0]-Weg_mm[0]))/(2*alpha+1)
 
 	Spannung,Dehnung=Spannung[numpy.where(Spannung>0)],Dehnung[numpy.where(Spannung>0)]-Dehnung[numpy.where(Spannung>0)][0]
 
 	R=max(Spannung)
-	Punkte=int(numpy.where(Spannung==R)[0][0]/5)	#
+	Punkte=int(numpy.where(Spannung==R)[0][0]/10)	#
 
 	Agt0=float(Dehnung[numpy.where(Spannung==R)][0])
 	steps=len(Dehnung[numpy.where(Dehnung<Agt0)])//Punkte
@@ -125,7 +125,7 @@ def mech(f,Dehngrenze):
 
 	return filename,R,E,A,W,Re,Ag,At,Wt
 
-data=ray.get([mech.remote(f,Dehngrenze) for f in files])
+data=ray.get([mech.remote(f,Dehngrenze,L,alpha) for f in files])
 
 numpy.save('data.npy',data)
 os.system('python3 read_Mech_R_E_A_W.py')
