@@ -1,5 +1,5 @@
 """
-Created 05. December 2022 by Daniel Van Opdenbosch, Technical University of Munich
+Created 11. January 2023 by Daniel Van Opdenbosch, Technical University of Munich
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. It is distributed without any warranty or implied warranty of merchantability or fitness for a particular purpose. See the GNU general public license for more details: <http://www.gnu.org/licenses/>
 """
@@ -46,7 +46,8 @@ def mech(f,Dehngrenze,L,alpha,*args):
 	print(filename)
 	if 'Weg_G_mm' in str(open(f,'r').readlines()):
 		Zeit_s,Kraft_N,Weg_mm,Spannung_MPa,Dehnung_perc,Weg_F_mm,Weg_G_mm=numpy.genfromtxt((t.replace(',','.') for t in open(f)),delimiter='\t',unpack=True,skip_header=1,skip_footer=0,usecols=range(7))
-		Weg_mm,L,alpha=Weg_G_mm,L0,0
+		if numpy.median(Weg_G_mm)!=0:
+			Weg_mm,L,alpha=Weg_G_mm,L0,0
 	else:
 		Zeit_s,Kraft_N,Weg_mm,Spannung_MPa,Dehnung_perc=numpy.genfromtxt((t.replace(',','.') for t in open(f)),delimiter='\t',unpack=True,skip_header=1,skip_footer=0,usecols=range(5))
 	Spannung=Kraft_N/(h*b1)
@@ -126,8 +127,7 @@ def mech(f,Dehngrenze,L,alpha,*args):
 	ax1.set_xlabel(r'$\epsilon/1$',fontsize=10)
 	ax1.set_ylabel(r'$\sigma/\rm{Pa}$',fontsize=10)
 	ax1.tick_params(direction='out')
-	ax1.tick_params(axis='x',pad=2,labelsize=8)
-	ax1.tick_params(axis='y',pad=2,labelsize=8)
+	ax1.tick_params(axis='both',pad=2,labelsize=8)
 	ax1.ticklabel_format(style='sci',axis='y',scilimits=(0,0))
 	ax1.xaxis.get_offset_text().set_size(8)
 	ax1.yaxis.get_offset_text().set_size(8)
