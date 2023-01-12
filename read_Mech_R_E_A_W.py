@@ -31,9 +31,24 @@ def common_elements(list1, list2):
 
 materials=sorted(common_elements(nameslist,nameslist))
 
-nameplot=Rplot=Eplot=Aplot=Wplot=Replot=Agplot=Atplot=Wtplot=[]
+nameplot=[]
+Rplot=[]
+Eplot=[]
+Aplot=[]
+Wplot=[]
+Replot=[]
+Agplot=[]
+Atplot=[]
+Wtplot=[]
 for name in materials:
-	R=E=A=W=Re=Ag=At=Wt=numpy.array([])
+	R=numpy.array([])
+	E=numpy.array([])
+	A=numpy.array([])
+	W=numpy.array([])
+	Re=numpy.array([])
+	Ag=numpy.array([])
+	At=numpy.array([])
+	Wt=numpy.array([])
 	for n,value in enumerate(data):
 		if value[0].split('-')[0]+value[0].split('-')[1]==name:
 			R=numpy.append(R,float(value[1]))
