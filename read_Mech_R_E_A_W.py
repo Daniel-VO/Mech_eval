@@ -1,5 +1,5 @@
 """
-Created 11. January 2023 by Daniel Van Opdenbosch, Technical University of Munich
+Created 12. January 2023 by Daniel Van Opdenbosch, Technical University of Munich
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. It is distributed without any warranty or implied warranty of merchantability or fitness for a particular purpose. See the GNU general public license for more details: <http://www.gnu.org/licenses/>
 """
@@ -31,24 +31,9 @@ def common_elements(list1, list2):
 
 materials=sorted(common_elements(nameslist,nameslist))
 
-nameplot=[]
-Rplot=[]
-Eplot=[]
-Aplot=[]
-Wplot=[]
-Replot=[]
-Agplot=[]
-Atplot=[]
-Wtplot=[]
+nameplot=Rplot=Eplot=Aplot=Wplot=Replot=Agplot=Atplot=Wtplot=[]
 for name in materials:
-	R=numpy.array([])
-	E=numpy.array([])
-	A=numpy.array([])
-	W=numpy.array([])
-	Re=numpy.array([])
-	Ag=numpy.array([])
-	At=numpy.array([])
-	Wt=numpy.array([])
+	R=E=A=W=Re=Ag=At=Wt=numpy.array([])
 	for n,value in enumerate(data):
 		if value[0].split('-')[0]+value[0].split('-')[1]==name:
 			R=numpy.append(R,float(value[1]))
