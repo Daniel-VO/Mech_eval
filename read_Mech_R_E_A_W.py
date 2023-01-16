@@ -1,5 +1,5 @@
 """
-Created 12. January 2023 by Daniel Van Opdenbosch, Technical University of Munich
+Created 16. January 2023 by Daniel Van Opdenbosch, Technical University of Munich
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. It is distributed without any warranty or implied warranty of merchantability or fitness for a particular purpose. See the GNU general public license for more details: <http://www.gnu.org/licenses/>
 """
@@ -107,7 +107,7 @@ ax1.xaxis.get_offset_text().set_size(8)
 ax1.yaxis.get_offset_text().set_size(8)
 plt.tight_layout(pad=0.1)
 plt.savefig('R.pdf',transparent=True)
-plt.savefig('R.png',dpi=600)
+plt.savefig('R.png',dpi=300)
 plt.close('all')
 
 
@@ -131,7 +131,7 @@ ax1.xaxis.get_offset_text().set_size(8)
 ax1.yaxis.get_offset_text().set_size(8)
 plt.tight_layout(pad=0.1)
 plt.savefig('E.pdf',transparent=True)
-plt.savefig('E.png',dpi=600)
+plt.savefig('E.png',dpi=300)
 plt.close('all')
 
 ########################################################################
@@ -156,7 +156,7 @@ ax1.xaxis.get_offset_text().set_size(8)
 ax1.yaxis.get_offset_text().set_size(8)
 plt.tight_layout(pad=0.1)
 plt.savefig('A.pdf',transparent=True)
-plt.savefig('A.png',dpi=600)
+plt.savefig('A.png',dpi=300)
 plt.close('all')
 
 ########################################################################
@@ -180,5 +180,5 @@ ax1.xaxis.get_offset_text().set_size(8)
 ax1.yaxis.get_offset_text().set_size(8)
 plt.tight_layout(pad=0.1)
 plt.savefig('W.pdf',transparent=True)
-plt.savefig('W.png',dpi=600)
+plt.savefig('W.png',dpi=300)
 plt.close('all')

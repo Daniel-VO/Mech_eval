@@ -1,5 +1,5 @@
 """
-Created 12. January 2023 by Daniel Van Opdenbosch, Technical University of Munich
+Created 16. January 2023 by Daniel Van Opdenbosch, Technical University of Munich
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. It is distributed without any warranty or implied warranty of merchantability or fitness for a particular purpose. See the GNU general public license for more details: <http://www.gnu.org/licenses/>
 """
@@ -130,7 +130,7 @@ def mech(f,Dehngrenze,L,alpha,*args):
 	ax1.yaxis.get_offset_text().set_size(8)
 	plt.tight_layout(pad=0.1)
 	plt.savefig(str(os.path.splitext(f)[0])+'.pdf',transparent=True)
-	plt.savefig(str(os.path.splitext(f)[0])+'.png',dpi=600)
+	plt.savefig(str(os.path.splitext(f)[0])+'.png',dpi=300)
 	plt.close('all')
 
 	return filename,R,E,A,W,Re,Ag,At,Wt
