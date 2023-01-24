@@ -1,5 +1,5 @@
 """
-Created 16. January 2023 by Daniel Van Opdenbosch, Technical University of Munich
+Created 24. January 2023 by Daniel Van Opdenbosch, Technical University of Munich
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. It is distributed without any warranty or implied warranty of merchantability or fitness for a particular purpose. See the GNU general public license for more details: <http://www.gnu.org/licenses/>
 """
@@ -15,6 +15,9 @@ import matplotlib.patheffects as pe
 from scipy import signal
 from scipy import stats
 
+def common_elements(list1, list2):
+	return list(set(list1) & set(list2))
+
 os.system('mv Read.log Read.alt')
 
 data=numpy.load('data.npy',allow_pickle=True)
@@ -26,11 +29,6 @@ for n,value in enumerate(data):
 	nameslist.append(value[0].split('-')[0]+value[0].split('-')[1])
 	# ~ print(value[0])
 
-def common_elements(list1, list2):
-	return list(set(list1) & set(list2))
-
-materials=sorted(common_elements(nameslist,nameslist))
-
 nameplot=[]
 Rplot=[]
 Eplot=[]
@@ -40,7 +38,7 @@ Replot=[]
 Agplot=[]
 Atplot=[]
 Wtplot=[]
-for name in materials:
+for name in sorted(common_elements(nameslist,nameslist)):
 	R=numpy.array([])
 	E=numpy.array([])
 	A=numpy.array([])
