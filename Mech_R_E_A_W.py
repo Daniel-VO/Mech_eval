@@ -1,5 +1,5 @@
 """
-Created 24. January 2023 by Daniel Van Opdenbosch, Technical University of Munich
+Created 06. March 2023 by Daniel Van Opdenbosch, Technical University of Munich
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. It is distributed without any warranty or implied warranty of merchantability or fitness for a particular purpose. See the GNU general public license for more details: <http://www.gnu.org/licenses/>
 """
@@ -38,7 +38,7 @@ alpha=b1/L*numpy.trapz(1/(b2-2*(r**2-(r-x)**2)**0.5),x)
 os.system('mv Results.log Results.alt')
 sys.stdout=open('Results.log','a')
 
-files=glob.glob('*[!_corr].txt',recursive=True)
+files=glob.glob('**/*[!_corr].txt',recursive=True)
 
 @ray.remote
 def mech(f,Dehngrenze,L,alpha,*args):
@@ -92,7 +92,7 @@ def mech(f,Dehngrenze,L,alpha,*args):
 		m,sigma0=Bahadur(f,numpy.log(Dehnung[Bereich]+1),Spannung[Bereich]*(Dehnung[Bereich]+1))
 		print(filename,'m',m,'sigma0',sigma0)
 
-	print(filename,'R',R,'E',E,'A',A,'W',W,'Re',R,'Ag',Ag,'At',At,'Wt',Wt)
+	print(filename,'R',R,'E',E,'A',A,'W',W,'Re',Re,'Ag',Ag,'At',At,'Wt',Wt)
 	numpy.savetxt(filename+'_corr.txt',numpy.transpose([Dehnung,Spannung]))
 
 	plt.clf()
