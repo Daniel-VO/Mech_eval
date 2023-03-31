@@ -86,7 +86,7 @@ xlabel=r'$\rm{Probe}$'
 
 ########################################################################
 
-plt.clf()
+plt.close('all')
 mpl.rc('text',usetex=True)
 mpl.rc('text.latex',preamble=r'\usepackage[helvet]{sfmath}')
 fig,ax1=plt.subplots(figsize=(7.5/2.54,5.3/2.54))
@@ -106,12 +106,11 @@ ax1.yaxis.get_offset_text().set_size(8)
 plt.tight_layout(pad=0.1)
 plt.savefig('R.pdf',transparent=True)
 plt.savefig('R.png',dpi=300)
-plt.close('all')
 
 
 ########################################################################
 
-plt.clf()
+plt.close('all')
 mpl.rc('text',usetex=True)
 mpl.rc('text.latex',preamble=r'\usepackage[helvet]{sfmath}')
 fig,ax1=plt.subplots(figsize=(7.5/2.54,5.3/2.54))
@@ -130,11 +129,10 @@ ax1.yaxis.get_offset_text().set_size(8)
 plt.tight_layout(pad=0.1)
 plt.savefig('E.pdf',transparent=True)
 plt.savefig('E.png',dpi=300)
-plt.close('all')
 
 ########################################################################
 
-plt.clf()
+plt.close('all')
 mpl.rc('text',usetex=True)
 mpl.rc('text.latex',preamble=r'\usepackage[helvet]{sfmath}')
 fig,ax1=plt.subplots(figsize=(7.5/2.54,5.3/2.54))
@@ -155,11 +153,10 @@ ax1.yaxis.get_offset_text().set_size(8)
 plt.tight_layout(pad=0.1)
 plt.savefig('A.pdf',transparent=True)
 plt.savefig('A.png',dpi=300)
-plt.close('all')
 
 ########################################################################
 
-plt.clf()
+plt.close('all')
 mpl.rc('text',usetex=True)
 mpl.rc('text.latex',preamble=r'\usepackage[helvet]{sfmath}')
 fig,ax1=plt.subplots(figsize=(7.5/2.54,5.3/2.54))
@@ -179,4 +176,3 @@ ax1.yaxis.get_offset_text().set_size(8)
 plt.tight_layout(pad=0.1)
 plt.savefig('W.pdf',transparent=True)
 plt.savefig('W.png',dpi=300)
-plt.close('all')

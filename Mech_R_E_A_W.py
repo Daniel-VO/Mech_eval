@@ -95,7 +95,7 @@ def mech(f,Dehngrenze,L,alpha,*args):
 	print(filename,'R',R,'E',E,'A',A,'W',W,'Re',Re,'Ag',Ag,'At',At,'Wt',Wt)
 	numpy.savetxt(filename+'_corr.txt',numpy.transpose([Dehnung,Spannung]))
 
-	plt.clf()
+	plt.close('all')
 	mpl.rc('text',usetex=True)
 	mpl.rc('text.latex',preamble=r'\usepackage[helvet]{sfmath}')
 	fig,ax1=plt.subplots(figsize=(7.5/2.54,5.3/2.54))
@@ -131,7 +131,6 @@ def mech(f,Dehngrenze,L,alpha,*args):
 	plt.tight_layout(pad=0.1)
 	plt.savefig(str(os.path.splitext(f)[0])+'.pdf',transparent=True)
 	plt.savefig(str(os.path.splitext(f)[0])+'.png',dpi=300)
-	plt.close('all')
 
 	return filename,R,E,A,W,Re,Ag,At,Wt
 
