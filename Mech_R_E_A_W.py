@@ -1,10 +1,10 @@
 """
-Created 06. March 2023 by Daniel Van Opdenbosch, Technical University of Munich
+Created 27. April 2023 by Daniel Van Opdenbosch, Technical University of Munich
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. It is distributed without any warranty or implied warranty of merchantability or fitness for a particular purpose. See the GNU general public license for more details: <http://www.gnu.org/licenses/>
 """
 
-import numpy
+import numpy as np
 import glob
 import os
 import ray
@@ -16,14 +16,14 @@ from scipy import signal
 from scipy import stats
 
 def Bahadur(f,wDehnung,wSpannung):
-	slope,intercept,low_slope,high_slope=stats.theilslopes(numpy.log(wSpannung),x=wDehnung)
-	m,sigma0=slope,numpy.exp(intercept)
-	plt.plot(wDehnung,sigma0*numpy.exp(m*wDehnung))
+	slope,intercept,low_slope,high_slope=stats.theilslopes(np.log(wSpannung),x=wDehnung)
+	m,sigma0=slope,np.exp(intercept)
+	plt.plot(wDehnung,sigma0*np.exp(m*wDehnung))
 	plt.plot(wDehnung,wSpannung)
 	plt.savefig(str(os.path.splitext(f)[0])+'_Bahadur.png')
 	return m,sigma0
 
-Dehngrenze=2e-4		#
+Streckgrenze=2e-4		#
 
 #Groessen aus DIN 527
 h=2e-3		#Probendicke
@@ -32,8 +32,8 @@ b2=10e-3	#Einspannbreite
 L=58e-3		#Einspannlaenge
 L0=25e-3	#Messlaenge
 r=(b2-b1)/2	#Radius der Fase
-x=numpy.linspace(0,r,1000000)
-alpha=b1/L*numpy.trapz(1/(b2-2*(r**2-(r-x)**2)**0.5),x)
+x=np.linspace(0,r,1000000)
+alpha=b1/L*np.trapz(1/(b2-2*(r**2-(r-x)**2)**0.5),x)
 
 os.system('mv Results.log Results.alt')
 sys.stdout=open('Results.log','a')
@@ -45,55 +45,55 @@ def mech(f,Dehngrenze,L,alpha,*args):
 	filename=os.path.splitext(f)[0].split('/')[-1]
 	print(filename)
 	if 'Weg_G_mm' in str(open(f,'r').readlines()):
-		Zeit_s,Kraft_N,Weg_mm,Spannung_MPa,Dehnung_perc,Weg_F_mm,Weg_G_mm=numpy.genfromtxt((t.replace(',','.') for t in open(f)),delimiter='\t',unpack=True,skip_header=1,skip_footer=0,usecols=range(7))
-		if numpy.median(Weg_G_mm)!=0:
+		Zeit_s,Kraft_N,Weg_mm,Spannung_MPa,Dehnung_perc,Weg_F_mm,Weg_G_mm=np.genfromtxt((t.replace(',','.') for t in open(f)),delimiter='\t',unpack=True,skip_header=1,skip_footer=0,usecols=range(7))
+		if np.median(Weg_G_mm)!=0:
 			Weg_mm,L,alpha=Weg_G_mm,L0,0
 	else:
-		Zeit_s,Kraft_N,Weg_mm,Spannung_MPa,Dehnung_perc=numpy.genfromtxt((t.replace(',','.') for t in open(f)),delimiter='\t',unpack=True,skip_header=1,skip_footer=0,usecols=range(5))
+		Zeit_s,Kraft_N,Weg_mm,Spannung_MPa,Dehnung_perc=np.genfromtxt((t.replace(',','.') for t in open(f)),delimiter='\t',unpack=True,skip_header=1,skip_footer=0,usecols=range(5))
 	Spannung=Kraft_N/(h*b1)
-	Dehnung=Weg_mm/(L*1e3+(Weg_mm[numpy.where(Kraft_N>0)][0]-Weg_mm[0]))/(2*alpha+1)
+	Dehnung=Weg_mm/(L*1e3+(Weg_mm[np.where(Kraft_N>0)][0]-Weg_mm[0]))/(2*alpha+1)
 
-	Spannung,Dehnung=Spannung[numpy.where(Spannung>0)],Dehnung[numpy.where(Spannung>0)]-Dehnung[numpy.where(Spannung>0)][0]
+	Spannung,Dehnung=Spannung[np.where(Spannung>0)],Dehnung[np.where(Spannung>0)]-Dehnung[np.where(Spannung>0)][0]
 
 	R=max(Spannung)
-	Punkte=int(numpy.where(Spannung==R)[0][0]/10)	#
+	Punkte=int(np.where(Spannung==R)[0][0]/10)	#
 
-	Agt0=float(Dehnung[numpy.where(Spannung==R)][0])
-	steps=len(Dehnung[numpy.where(Dehnung<Agt0)])//Punkte
-	theils=numpy.array([])
-	for i in numpy.arange(steps):
-		ind=numpy.where((Dehnung>=i*Agt0/steps)&(Dehnung<(1+i)*Agt0/steps))
-		theils=numpy.append(theils,stats.theilslopes(Spannung[ind],x=Dehnung[ind]))
+	Agt0=float(Dehnung[np.where(Spannung==R)][0])
+	steps=len(Dehnung[np.where(Dehnung<Agt0)])//Punkte
+	theils=np.array([])
+	for i in np.arange(steps):
+		ind=np.where((Dehnung>=i*Agt0/steps)&(Dehnung<(1+i)*Agt0/steps))
+		theils=np.append(theils,stats.theilslopes(Spannung[ind],x=Dehnung[ind]))
 	theils=theils.reshape(steps,4)
-	theil=theils[numpy.where(theils[:,0]==max(theils[:,0]))][0]
+	theil=theils[np.where(theils[:,0]==max(theils[:,0]))][0]
 	E,disp,Econflo,Econfup=theil[0],theil[1],theil[2],theil[3]
 
 	Dehnung+=disp/E
-	Spannung,Dehnung=Spannung[numpy.where(Dehnung>0)],Dehnung[numpy.where(Dehnung>0)]
+	Spannung,Dehnung=Spannung[np.where(Dehnung>0)],Dehnung[np.where(Dehnung>0)]
 
-	indBruch=numpy.where(Spannung>=R/10)[-1][-1]
-	Agt=float(Dehnung[numpy.where(Spannung==R)][0])
+	indBruch=np.where(Spannung>=R/10)[-1][-1]
+	Agt=float(Dehnung[np.where(Spannung==R)][0])
 	At=float(Dehnung[indBruch])
 
 	Ag=Agt-R/E
-	A=At-float(numpy.median(Spannung[indBruch-5:indBruch]))/E
+	A=At-float(np.median(Spannung[indBruch-5:indBruch]))/E
 
 	if Ag<Dehngrenze:
 		Dehngrenze=Ag
 		Re=R
 	else:
-		Re=Spannung[numpy.where(Dehnung-Spannung/E>=Dehngrenze)][0]
+		Re=Spannung[np.where(Dehnung-Spannung/E>=Dehngrenze)][0]
 
-	Wt=numpy.trapz(Spannung[:indBruch],x=Dehnung[:indBruch])
+	Wt=np.trapz(Spannung[:indBruch],x=Dehnung[:indBruch])
 	W=Wt-R**2/E/2
 
 	if 'Bahadur' in [*args]:
-		Bereich=numpy.where(Dehnung-Spannung/E<Dehngrenze)
-		m,sigma0=Bahadur(f,numpy.log(Dehnung[Bereich]+1),Spannung[Bereich]*(Dehnung[Bereich]+1))
+		Bereich=np.where(Dehnung-Spannung/E<Dehngrenze)
+		m,sigma0=Bahadur(f,np.log(Dehnung[Bereich]+1),Spannung[Bereich]*(Dehnung[Bereich]+1))
 		print(filename,'m',m,'sigma0',sigma0)
 
 	print(filename,'R',R,'E',E,'A',A,'W',W,'Re',Re,'Ag',Ag,'At',At,'Wt',Wt)
-	numpy.savetxt(filename+'_corr.txt',numpy.transpose([Dehnung,Spannung]))
+	np.savetxt(filename+'_corr.txt',np.transpose([Dehnung,Spannung]))
 
 	plt.close('all')
 	mpl.rc('text',usetex=True)
@@ -112,13 +112,13 @@ def mech(f,Dehngrenze,L,alpha,*args):
 	ax1.errorbar(Agt-R/E,0,marker='s',color='k',markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0,path_effects=[pe.Stroke(linewidth=2,foreground='w'),pe.Normal()],zorder=10)
 	ax1.errorbar(Agt,R,marker='s',color='k',markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0,path_effects=[pe.Stroke(linewidth=2,foreground='w'),pe.Normal()],zorder=10)
 
-	ax1.plot(Dehnung+At-float(numpy.median(Spannung[indBruch-5:indBruch]))/E,Dehnung*E,'k--',linewidth=0.5,path_effects=[pe.Stroke(linewidth=1,foreground='white'),pe.Normal()])
-	ax1.errorbar(At-float(numpy.median(Spannung[indBruch-5:indBruch]))/E,0,marker='s',color='k',markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0,path_effects=[pe.Stroke(linewidth=2,foreground='w'),pe.Normal()],zorder=10)
-	ax1.errorbar(At,float(numpy.median(Spannung[indBruch-5:indBruch])),marker='s',color='k',markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0,path_effects=[pe.Stroke(linewidth=2,foreground='w'),pe.Normal()],zorder=10)
+	ax1.plot(Dehnung+At-float(np.median(Spannung[indBruch-5:indBruch]))/E,Dehnung*E,'k--',linewidth=0.5,path_effects=[pe.Stroke(linewidth=1,foreground='white'),pe.Normal()])
+	ax1.errorbar(At-float(np.median(Spannung[indBruch-5:indBruch]))/E,0,marker='s',color='k',markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0,path_effects=[pe.Stroke(linewidth=2,foreground='w'),pe.Normal()],zorder=10)
+	ax1.errorbar(At,float(np.median(Spannung[indBruch-5:indBruch])),marker='s',color='k',markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0,path_effects=[pe.Stroke(linewidth=2,foreground='w'),pe.Normal()],zorder=10)
 
-	ax1.plot(Dehnung[numpy.where(Dehnung<=At*1.5)],Spannung[numpy.where(Dehnung<=At*1.5)],'k',linewidth=0.5,path_effects=[pe.Stroke(linewidth=1,foreground='white'),pe.Normal()])
+	ax1.plot(Dehnung[np.where(Dehnung<=At*1.5)],Spannung[np.where(Dehnung<=At*1.5)],'k',linewidth=0.5,path_effects=[pe.Stroke(linewidth=1,foreground='white'),pe.Normal()])
 
-	ax1.set_xlim([-max(Dehnung[numpy.where(Dehnung<=At*1.5)])*0.05,max(Dehnung[numpy.where(Dehnung<=At*1.5)])*1.05])
+	ax1.set_xlim([-max(Dehnung[np.where(Dehnung<=At*1.5)])*0.05,max(Dehnung[np.where(Dehnung<=At*1.5)])*1.05])
 	ax1.set_ylim([-R*0.05,R*1.1])
 
 	ax1.set_xlabel(r'$\epsilon/1$',fontsize=10)
@@ -136,5 +136,5 @@ def mech(f,Dehngrenze,L,alpha,*args):
 
 data=ray.get([mech.remote(f,Dehngrenze,L,alpha,sys.argv) for f in files])
 
-numpy.save('data.npy',data)
+np.save('data.npy',data)
 os.system('python3 read_Mech_R_E_A_W.py')

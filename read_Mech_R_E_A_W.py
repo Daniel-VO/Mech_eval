@@ -1,10 +1,10 @@
 """
-Created 06. March 2023 by Daniel Van Opdenbosch, Technical University of Munich
+Created 27. April 2023 by Daniel Van Opdenbosch, Technical University of Munich
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. It is distributed without any warranty or implied warranty of merchantability or fitness for a particular purpose. See the GNU general public license for more details: <http://www.gnu.org/licenses/>
 """
 
-import numpy
+import numpy as np
 import glob
 import os
 import quantities as pq
@@ -20,7 +20,7 @@ def common_elements(list1, list2):
 
 os.system('mv Read.log Read.alt')
 
-data=numpy.load('data.npy',allow_pickle=True)
+data=np.load('data.npy',allow_pickle=True)
 #[filename,R,E,A,W,Re,Ag,At,Wt]
 
 nameslist=[]
@@ -39,33 +39,33 @@ Agplot=[]
 Atplot=[]
 Wtplot=[]
 for name in sorted(common_elements(nameslist,nameslist)):
-	R=numpy.array([])
-	E=numpy.array([])
-	A=numpy.array([])
-	W=numpy.array([])
-	Re=numpy.array([])
-	Ag=numpy.array([])
-	At=numpy.array([])
-	Wt=numpy.array([])
+	R=np.array([])
+	E=np.array([])
+	A=np.array([])
+	W=np.array([])
+	Re=np.array([])
+	Ag=np.array([])
+	At=np.array([])
+	Wt=np.array([])
 	for n,value in enumerate(data):
 		if value[0].split('-')[0]+value[0].split('-')[1]==name:
-			R=numpy.append(R,float(value[1]))
-			E=numpy.append(E,float(value[2]))
-			A=numpy.append(A,float(value[3]))
-			W=numpy.append(W,float(value[4]))
-			Re=numpy.append(Re,float(value[5]))
-			Ag=numpy.append(Ag,float(value[6]))
-			At=numpy.append(At,float(value[7]))
-			Wt=numpy.append(Wt,float(value[8]))
+			R=np.append(R,float(value[1]))
+			E=np.append(E,float(value[2]))
+			A=np.append(A,float(value[3]))
+			W=np.append(W,float(value[4]))
+			Re=np.append(Re,float(value[5]))
+			Ag=np.append(Ag,float(value[6]))
+			At=np.append(At,float(value[7]))
+			Wt=np.append(Wt,float(value[8]))
 	nameplot.append(name.replace('_','-'))
-	Rplot.append(uq(numpy.median(R),pq.Pa,stats.median_abs_deviation(R)))
-	Eplot.append(uq(numpy.median(E),pq.Pa,stats.median_abs_deviation(E)))
-	Aplot.append(uq(numpy.median(A),pq.dimensionless,stats.median_abs_deviation(A)))
-	Wplot.append(uq(numpy.median(W),pq.J/pq.m**3,stats.median_abs_deviation(W)))
-	Replot.append(uq(numpy.median(Re),pq.Pa,stats.median_abs_deviation(Re)))
-	Agplot.append(uq(numpy.median(Ag),pq.dimensionless,stats.median_abs_deviation(Ag)))
-	Atplot.append(uq(numpy.median(At),pq.dimensionless,stats.median_abs_deviation(At)))
-	Wtplot.append(uq(numpy.median(Wt),pq.J/pq.m**3,stats.median_abs_deviation(Wt)))
+	Rplot.append(uq(np.median(R),pq.Pa,stats.median_abs_deviation(R)))
+	Eplot.append(uq(np.median(E),pq.Pa,stats.median_abs_deviation(E)))
+	Aplot.append(uq(np.median(A),pq.dimensionless,stats.median_abs_deviation(A)))
+	Wplot.append(uq(np.median(W),pq.J/pq.m**3,stats.median_abs_deviation(W)))
+	Replot.append(uq(np.median(Re),pq.Pa,stats.median_abs_deviation(Re)))
+	Agplot.append(uq(np.median(Ag),pq.dimensionless,stats.median_abs_deviation(Ag)))
+	Atplot.append(uq(np.median(At),pq.dimensionless,stats.median_abs_deviation(At)))
+	Wtplot.append(uq(np.median(Wt),pq.J/pq.m**3,stats.median_abs_deviation(Wt)))
 
 with open('Read.log','a') as e:
 	for s,values in enumerate(nameplot):
@@ -81,7 +81,7 @@ Atplot=uq([i.magnitude for i in Atplot],Atplot[0].units,[i.uncertainty for i in 
 Wtplot=uq([i.magnitude for i in Wtplot],Wtplot[0].units,[i.uncertainty for i in Wtplot])
 
 labels=nameplot
-x=numpy.arange(len(labels))
+x=np.arange(len(labels))
 xlabel=r'$\rm{Probe}$'
 
 ########################################################################
@@ -91,8 +91,8 @@ mpl.rc('text',usetex=True)
 mpl.rc('text.latex',preamble=r'\usepackage[helvet]{sfmath}')
 fig,ax1=plt.subplots(figsize=(7.5/2.54,5.3/2.54))
 
-ax1.errorbar(nameplot,Rplot.magnitude,marker='s',color='k',yerr=numpy.array(Rplot.uncertainty),markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0)
-ax1.errorbar(nameplot,Replot.magnitude,marker='o',color='k',yerr=numpy.array(Replot.uncertainty),markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0)
+ax1.errorbar(nameplot,Rplot.magnitude,marker='s',color='k',yerr=np.array(Rplot.uncertainty),markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0)
+ax1.errorbar(nameplot,Replot.magnitude,marker='o',color='k',yerr=np.array(Replot.uncertainty),markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0)
 
 # ~ ax1.set_xlabel(xlabel,fontsize=10)
 # ~ plt.xticks(x,labels)
@@ -115,7 +115,7 @@ mpl.rc('text',usetex=True)
 mpl.rc('text.latex',preamble=r'\usepackage[helvet]{sfmath}')
 fig,ax1=plt.subplots(figsize=(7.5/2.54,5.3/2.54))
 
-ax1.errorbar(nameplot,Eplot.magnitude,marker='s',color='k',yerr=numpy.array(Eplot.uncertainty),markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0)
+ax1.errorbar(nameplot,Eplot.magnitude,marker='s',color='k',yerr=np.array(Eplot.uncertainty),markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0)
 
 # ~ ax1.set_xlabel(xlabel,fontsize=10)
 # ~ plt.xticks(x,labels)
@@ -137,9 +137,9 @@ mpl.rc('text',usetex=True)
 mpl.rc('text.latex',preamble=r'\usepackage[helvet]{sfmath}')
 fig,ax1=plt.subplots(figsize=(7.5/2.54,5.3/2.54))
 
-ax1.errorbar(nameplot,Aplot.magnitude,marker='s',color='k',yerr=numpy.array(Aplot.uncertainty),markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0)
-ax1.errorbar(nameplot,Agplot.magnitude,marker='o',color='k',yerr=numpy.array(Agplot.uncertainty),markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0)
-ax1.errorbar(nameplot,Atplot.magnitude,marker='^',color='k',yerr=numpy.array(Atplot.uncertainty),markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0)
+ax1.errorbar(nameplot,Aplot.magnitude,marker='s',color='k',yerr=np.array(Aplot.uncertainty),markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0)
+ax1.errorbar(nameplot,Agplot.magnitude,marker='o',color='k',yerr=np.array(Agplot.uncertainty),markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0)
+ax1.errorbar(nameplot,Atplot.magnitude,marker='^',color='k',yerr=np.array(Atplot.uncertainty),markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0)
 
 # ~ ax1.set_xlabel(xlabel,fontsize=10)
 # ~ plt.xticks(x,labels)
@@ -161,8 +161,8 @@ mpl.rc('text',usetex=True)
 mpl.rc('text.latex',preamble=r'\usepackage[helvet]{sfmath}')
 fig,ax1=plt.subplots(figsize=(7.5/2.54,5.3/2.54))
 
-ax1.errorbar(nameplot,Wplot.magnitude,marker='s',color='k',yerr=numpy.array(Wplot.uncertainty),markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0)
-ax1.errorbar(nameplot,Wtplot.magnitude,marker='^',color='k',yerr=numpy.array(Wtplot.uncertainty),markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0)
+ax1.errorbar(nameplot,Wplot.magnitude,marker='s',color='k',yerr=np.array(Wplot.uncertainty),markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0)
+ax1.errorbar(nameplot,Wtplot.magnitude,marker='^',color='k',yerr=np.array(Wtplot.uncertainty),markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0)
 
 # ~ ax1.set_xlabel(xlabel,fontsize=10)
 # ~ plt.xticks(x,labels)
