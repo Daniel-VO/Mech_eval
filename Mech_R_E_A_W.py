@@ -1,5 +1,5 @@
 """
-Created 27. April 2023 by Daniel Van Opdenbosch, Technical University of Munich
+Created 02. May 2023 by Daniel Van Opdenbosch, Technical University of Munich
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. It is distributed without any warranty or implied warranty of merchantability or fitness for a particular purpose. See the GNU general public license for more details: <http://www.gnu.org/licenses/>
 """
@@ -23,7 +23,7 @@ def Bahadur(f,wDehnung,wSpannung):
 	plt.savefig(str(os.path.splitext(f)[0])+'_Bahadur.png')
 	return m,sigma0
 
-Streckgrenze=2e-4		#
+Dehngrenze=2e-4		#
 
 #Groessen aus DIN 527
 h=2e-3		#Probendicke
