@@ -36,14 +36,12 @@ x=np.linspace(0,r,1000000)
 alpha=b1/L*np.trapz(1/(b2-2*(r**2-(r-x)**2)**0.5),x)
 
 os.system('mv Results.log Results.alt')
-sys.stdout=open('Results.log','a')
 
 files=glob.glob('**/*[!_corr].txt',recursive=True)
 
 @ray.remote
 def mech(f,Dehngrenze,L,alpha,*args):
 	filename=os.path.splitext(f)[0].split('/')[-1]
-	print(filename)
 	if 'Weg_F_mm' in str(open(f,'r').readlines()):
 		Zeit_s,Kraft_N,Weg_mm,Spannung_MPa,Dehnung_perc,Weg_F_mm,Weg_G_mm=np.genfromtxt((t.replace(',','.') for t in open(f)),delimiter='\t',unpack=True,skip_header=1,skip_footer=0,usecols=range(7))
 		if np.median(Weg_F_mm)!=0:
@@ -92,7 +90,8 @@ def mech(f,Dehngrenze,L,alpha,*args):
 		m,sigma0=Bahadur(f,np.log(Dehnung[Bereich]+1),Spannung[Bereich]*(Dehnung[Bereich]+1))
 		print(filename,'m',m,'sigma0',sigma0)
 
-	print(filename,'R',R,'E',E,'A',A,'W',W,'Re',Re,'Ag',Ag,'At',At,'Wt',Wt)
+	with open('Results.log','a') as logfile:
+		logfile.write(str([filename,'R:',R,' E:',E,' A:',A,' W:',W,' Re:',Re,' Ag:',Ag,' At:',At,' Wt:',Wt]).replace('[','').replace(']','').replace("'","")+'\n')
 	np.savetxt(filename+'_corr.txt',np.transpose([Dehnung,Spannung]))
 
 	plt.close('all')
