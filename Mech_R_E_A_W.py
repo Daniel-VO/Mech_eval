@@ -58,10 +58,10 @@ def mech(f,Dehngrenze,L,alpha,*args):
 	Schritte=5	#
 	Punkte=int(np.where(Spannung==R)[0][0]/Schritte)
 	theils=np.array([])
-	for i in np.arange(Schritte):
+	for i in np.arange(1,Schritte):
 		ind=np.arange(i*Punkte,(i+1)*Punkte)
 		theils=np.append(theils,stats.theilslopes(Spannung[ind],x=Dehnung[ind]))
-	theils=theils.reshape(Schritte,4)
+	theils=theils.reshape(Schritte-1,4)
 	theil=theils[np.where(theils[:,0]==max(theils[:,0]))][0]
 	E,disp,Econflo,Econfup=theil[0],theil[1],theil[2],theil[3]
 
