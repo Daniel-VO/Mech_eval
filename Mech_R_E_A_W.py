@@ -44,9 +44,11 @@ def mech(f,Dehngrenze,L,alpha,*args):
 	filename=os.path.splitext(f)[0].split('/')[-1]
 	if 'Weg_F_mm' in str(open(f,'r').readlines()):
 		Zeit_s,Kraft_N,Weg_mm,Spannung_MPa,Dehnung_perc,Weg_F_mm,Weg_G_mm=np.genfromtxt((t.replace(',','.') for t in open(f)),delimiter='\t',unpack=True,skip_header=1,skip_footer=0,usecols=range(7))
-		if np.median(Weg_F_mm)!=0:
+		if np.median(Weg_F_mm)!=0 and max(Weg_G_mm-Weg_F_mm)<1:
 			Weg_mm,L,alpha=Weg_F_mm,L0,0
-	else:
+		elif np.median(Weg_G_mm)!=0:
+			Weg_mm,L,alpha=Weg_G_mm,L0,0
+ 	else:
 		Zeit_s,Kraft_N,Weg_mm,Spannung_MPa,Dehnung_perc=np.genfromtxt((t.replace(',','.') for t in open(f)),delimiter='\t',unpack=True,skip_header=1,skip_footer=0,usecols=range(5))
 	Spannung=Kraft_N/(h*b1)
 	Dehnung=Weg_mm/(L*1e3+(Weg_mm[np.where(Kraft_N>0)][0]-Weg_mm[0]))/(2*alpha+1)
