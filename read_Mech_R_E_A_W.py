@@ -1,5 +1,5 @@
 """
-Created 05. May 2023 by Daniel Van Opdenbosch, Technical University of Munich
+Created 13. July 2023 by Daniel Van Opdenbosch, Technical University of Munich
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. It is distributed without any warranty or implied warranty of merchantability or fitness for a particular purpose. See the GNU general public license for more details: <http://www.gnu.org/licenses/>
 """
@@ -18,7 +18,7 @@ from scipy import stats
 def common_elements(list1, list2):
 	return list(set(list1) & set(list2))
 
-os.system('mv Read.log Read.alt')
+os.system('mv read.log read.alt')
 
 data=np.load('data.npy',allow_pickle=True)
 #[filename,R,E,A,W,Re,Ag,At,Wt]
@@ -67,7 +67,7 @@ for name in sorted(common_elements(nameslist,nameslist)):
 	Atplot.append(uq(np.median(At),pq.dimensionless,stats.median_abs_deviation(At)))
 	Wtplot.append(uq(np.median(Wt),pq.J/pq.m**3,stats.median_abs_deviation(Wt)))
 
-with open('Read.log','a') as e:
+with open('read.log','a') as e:
 	for s,values in enumerate(nameplot):
 		e.write(str([i for i in [nameplot[s],'R:',Rplot[s],'E:',Eplot[s],'A:',Aplot[s],'W:',Wplot[s],'Re:',Replot[s],'Ag:',Agplot[s],'At:',Atplot[s],'Wt:',Wtplot[s]]]).replace('UncertainQuantity','').replace('array','').replace('\n','').replace('[','').replace(']','').replace('(','').replace(')','').replace("'","")+'\n')
 

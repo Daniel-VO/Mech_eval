@@ -1,5 +1,5 @@
 """
-Created 05. May 2023 by Daniel Van Opdenbosch, Technical University of Munich
+Created 13. July 2023 by Daniel Van Opdenbosch, Technical University of Munich
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. It is distributed without any warranty or implied warranty of merchantability or fitness for a particular purpose. See the GNU general public license for more details: <http://www.gnu.org/licenses/>
 """
@@ -35,7 +35,7 @@ r=(b2-b1)/2	#Radius der Fase
 x=np.linspace(0,r,1000000)
 alpha=b1/L*np.trapz(1/(b2-2*(r**2-(r-x)**2)**0.5),x)
 
-os.system('mv Results.log Results.alt')
+os.system('mv results.log results.alt')
 
 files=glob.glob('**/*[!_corr].txt',recursive=True)
 
@@ -54,15 +54,14 @@ def mech(f,Dehngrenze,L,alpha,*args):
 	Spannung,Dehnung=Spannung[np.where(Spannung>0)],Dehnung[np.where(Spannung>0)]-Dehnung[np.where(Spannung>0)][0]
 
 	R=max(Spannung)
-	Punkte=int(np.where(Spannung==R)[0][0]/5)	#
 
-	Agt0=float(Dehnung[np.where(Spannung==R)][0])
-	steps=len(Dehnung[np.where(Dehnung<Agt0)])//Punkte
+	Schritte=5	#
+	Punkte=int(np.where(Spannung==R)[0][0]/Schritte)
 	theils=np.array([])
-	for i in np.arange(steps):
-		ind=np.where((Dehnung>=i*Agt0/steps)&(Dehnung<(1+i)*Agt0/steps))
+	for i in np.arange(Schritte):
+		ind=np.arange(i*Punkte,(i+1)*Punkte)
 		theils=np.append(theils,stats.theilslopes(Spannung[ind],x=Dehnung[ind]))
-	theils=theils.reshape(steps,4)
+	theils=theils.reshape(Schritte,4)
 	theil=theils[np.where(theils[:,0]==max(theils[:,0]))][0]
 	E,disp,Econflo,Econfup=theil[0],theil[1],theil[2],theil[3]
 
@@ -90,7 +89,7 @@ def mech(f,Dehngrenze,L,alpha,*args):
 		m,sigma0=Bahadur(f,np.log(Dehnung[Bereich]+1),Spannung[Bereich]*(Dehnung[Bereich]+1))
 		print(filename,'m',m,'sigma0',sigma0)
 
-	with open('Results.log','a') as logfile:
+	with open('results.log','a') as logfile:
 		logfile.write(str([filename,'R:',R,' E:',E,' A:',A,' W:',W,' Re:',Re,' Ag:',Ag,' At:',At,' Wt:',Wt]).replace('[','').replace(']','').replace("'","")+'\n')
 	np.savetxt(filename+'_corr.txt',np.transpose([Dehnung,Spannung]))
 
