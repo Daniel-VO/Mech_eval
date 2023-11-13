@@ -1,5 +1,5 @@
 """
-Created 13. July 2023 by Daniel Van Opdenbosch, Technical University of Munich
+Created 13. November 2023 by Daniel Van Opdenbosch, Technical University of Munich
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. It is distributed without any warranty or implied warranty of merchantability or fitness for a particular purpose. See the GNU general public license for more details: <http://www.gnu.org/licenses/>
 """
@@ -48,7 +48,7 @@ def mech(f,Dehngrenze,L,alpha,*args):
 			Weg_mm,L,alpha=Weg_F_mm,L0,0
 		elif np.median(Weg_G_mm)!=0:
 			Weg_mm,L,alpha=Weg_G_mm,L0,0
- 	else:
+	else:
 		Zeit_s,Kraft_N,Weg_mm,Spannung_MPa,Dehnung_perc=np.genfromtxt((t.replace(',','.') for t in open(f)),delimiter='\t',unpack=True,skip_header=1,skip_footer=0,usecols=range(5))
 	Spannung=Kraft_N/(h*b1)
 	Dehnung=Weg_mm/(L*1e3+(Weg_mm[np.where(Kraft_N>0)][0]-Weg_mm[0]))/(2*alpha+1)
@@ -123,7 +123,6 @@ def mech(f,Dehngrenze,L,alpha,*args):
 
 	ax1.set_xlabel(r'$\epsilon/1$',fontsize=10)
 	ax1.set_ylabel(r'$\sigma/\rm{Pa}$',fontsize=10)
-	ax1.tick_params(direction='out')
 	ax1.tick_params(axis='both',pad=2,labelsize=8)
 	ax1.ticklabel_format(style='sci',axis='y',scilimits=(0,0))
 	ax1.xaxis.get_offset_text().set_size(8)
