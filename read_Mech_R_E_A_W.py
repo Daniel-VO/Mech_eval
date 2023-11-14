@@ -103,7 +103,7 @@ plt.tick_params(axis='both',pad=2,labelsize=8)
 plt.ticklabel_format(style='sci',axis='y',scilimits=(-3,3))
 plt.gca().yaxis.get_offset_text().set_size(8)
 plt.tight_layout(pad=0.1)
-plt.savefig('R.pdf',transparent=True)
+plt.savefig('R.pdf')
 plt.savefig('R.png',dpi=300)
 
 ####
@@ -124,7 +124,7 @@ plt.tick_params(axis='both',pad=2,labelsize=8)
 plt.ticklabel_format(style='sci',axis='y',scilimits=(-3,3))
 plt.gca().yaxis.get_offset_text().set_size(8)
 plt.tight_layout(pad=0.1)
-plt.savefig('E.pdf',transparent=True)
+plt.savefig('E.pdf')
 plt.savefig('E.png',dpi=300)
 
 ####
@@ -147,7 +147,7 @@ plt.tick_params(axis='both',pad=2,labelsize=8)
 plt.ticklabel_format(style='sci',axis='y',scilimits=(-3,3))
 plt.gca().yaxis.get_offset_text().set_size(8)
 plt.tight_layout(pad=0.1)
-plt.savefig('A.pdf',transparent=True)
+plt.savefig('A.pdf')
 plt.savefig('A.png',dpi=300)
 
 ####
@@ -169,5 +169,5 @@ plt.tick_params(axis='both',pad=2,labelsize=8)
 plt.ticklabel_format(style='sci',axis='y',scilimits=(-3,3))
 plt.gca().yaxis.get_offset_text().set_size(8)
 plt.tight_layout(pad=0.1)
-plt.savefig('W.pdf',transparent=True)
+plt.savefig('W.pdf')
 plt.savefig('W.png',dpi=300)

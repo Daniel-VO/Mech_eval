@@ -126,7 +126,7 @@ def mech(f,Dehngrenze,L,alpha,*args):
 	plt.tick_params(axis='both',pad=2,labelsize=8)
 	plt.ticklabel_format(style='sci',axis='y',scilimits=(0,0))
 	plt.tight_layout(pad=0.1)
-	plt.savefig(str(os.path.splitext(f)[0])+'.pdf',transparent=True)
+	plt.savefig(str(os.path.splitext(f)[0])+'.pdf')
 	plt.savefig(str(os.path.splitext(f)[0])+'.png',dpi=300)
 
 	return filename,R,E,A,W,Re,Ag,At,Wt
