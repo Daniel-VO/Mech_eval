@@ -1,5 +1,5 @@
 """
-Created 13. November 2023 by Daniel Van Opdenbosch, Technical University of Munich
+Created 14. November 2023 by Daniel Van Opdenbosch, Technical University of Munich
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. It is distributed without any warranty or implied warranty of merchantability or fitness for a particular purpose. See the GNU general public license for more details: <http://www.gnu.org/licenses/>
 """
@@ -98,35 +98,33 @@ def mech(f,Dehngrenze,L,alpha,*args):
 	plt.close('all')
 	mpl.rc('text',usetex=True)
 	mpl.rc('text.latex',preamble=r'\usepackage[helvet]{sfmath}')
-	fig,ax1=plt.subplots(figsize=(7.5/2.54,5.3/2.54))
+	plt.subplots(figsize=(7.5/2.54,5.3/2.54))
 
-	ax1.plot(Dehnung,Dehnung*E,'k',linewidth=0.5,path_effects=[pe.Stroke(linewidth=1,foreground='white'),pe.Normal()])
-	ax1.plot(Dehnung,Dehnung*Econflo,'k:',linewidth=0.5,path_effects=[pe.Stroke(linewidth=1,foreground='white'),pe.Normal()])
-	ax1.plot(Dehnung,Dehnung*Econfup,'k:',linewidth=0.5,path_effects=[pe.Stroke(linewidth=1,foreground='white'),pe.Normal()])
+	plt.plot(Dehnung,Dehnung*E,'k',linewidth=0.5,path_effects=[pe.Stroke(linewidth=1,foreground='white'),pe.Normal()])
+	plt.plot(Dehnung,Dehnung*Econflo,'k:',linewidth=0.5,path_effects=[pe.Stroke(linewidth=1,foreground='white'),pe.Normal()])
+	plt.plot(Dehnung,Dehnung*Econfup,'k:',linewidth=0.5,path_effects=[pe.Stroke(linewidth=1,foreground='white'),pe.Normal()])
 
-	ax1.plot(Dehnung+Dehngrenze,Dehnung*E,'k--',linewidth=0.5,path_effects=[pe.Stroke(linewidth=1,foreground='white'),pe.Normal()])
-	ax1.errorbar(Dehngrenze,0,marker='s',color='k',markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0,path_effects=[pe.Stroke(linewidth=2,foreground='w'),pe.Normal()],zorder=10)
-	ax1.errorbar(Dehngrenze+Re/E,Re,marker='s',color='k',markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0,path_effects=[pe.Stroke(linewidth=2,foreground='w'),pe.Normal()],zorder=10)
+	plt.plot(Dehnung+Dehngrenze,Dehnung*E,'k--',linewidth=0.5,path_effects=[pe.Stroke(linewidth=1,foreground='white'),pe.Normal()])
+	plt.errorbar(Dehngrenze,0,marker='s',color='k',markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0,path_effects=[pe.Stroke(linewidth=2,foreground='w'),pe.Normal()],zorder=10)
+	plt.errorbar(Dehngrenze+Re/E,Re,marker='s',color='k',markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0,path_effects=[pe.Stroke(linewidth=2,foreground='w'),pe.Normal()],zorder=10)
 
-	ax1.plot(Dehnung+Agt-R/E,Dehnung*E,'k--',linewidth=0.5,path_effects=[pe.Stroke(linewidth=1,foreground='white'),pe.Normal()])
-	ax1.errorbar(Agt-R/E,0,marker='s',color='k',markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0,path_effects=[pe.Stroke(linewidth=2,foreground='w'),pe.Normal()],zorder=10)
-	ax1.errorbar(Agt,R,marker='s',color='k',markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0,path_effects=[pe.Stroke(linewidth=2,foreground='w'),pe.Normal()],zorder=10)
+	plt.plot(Dehnung+Agt-R/E,Dehnung*E,'k--',linewidth=0.5,path_effects=[pe.Stroke(linewidth=1,foreground='white'),pe.Normal()])
+	plt.errorbar(Agt-R/E,0,marker='s',color='k',markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0,path_effects=[pe.Stroke(linewidth=2,foreground='w'),pe.Normal()],zorder=10)
+	plt.errorbar(Agt,R,marker='s',color='k',markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0,path_effects=[pe.Stroke(linewidth=2,foreground='w'),pe.Normal()],zorder=10)
 
-	ax1.plot(Dehnung+At-float(np.median(Spannung[indBruch-5:indBruch]))/E,Dehnung*E,'k--',linewidth=0.5,path_effects=[pe.Stroke(linewidth=1,foreground='white'),pe.Normal()])
-	ax1.errorbar(At-float(np.median(Spannung[indBruch-5:indBruch]))/E,0,marker='s',color='k',markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0,path_effects=[pe.Stroke(linewidth=2,foreground='w'),pe.Normal()],zorder=10)
-	ax1.errorbar(At,float(np.median(Spannung[indBruch-5:indBruch])),marker='s',color='k',markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0,path_effects=[pe.Stroke(linewidth=2,foreground='w'),pe.Normal()],zorder=10)
+	plt.plot(Dehnung+At-float(np.median(Spannung[indBruch-5:indBruch]))/E,Dehnung*E,'k--',linewidth=0.5,path_effects=[pe.Stroke(linewidth=1,foreground='white'),pe.Normal()])
+	plt.errorbar(At-float(np.median(Spannung[indBruch-5:indBruch]))/E,0,marker='s',color='k',markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0,path_effects=[pe.Stroke(linewidth=2,foreground='w'),pe.Normal()],zorder=10)
+	plt.errorbar(At,float(np.median(Spannung[indBruch-5:indBruch])),marker='s',color='k',markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0,path_effects=[pe.Stroke(linewidth=2,foreground='w'),pe.Normal()],zorder=10)
 
-	ax1.plot(Dehnung[np.where(Dehnung<=At*1.5)],Spannung[np.where(Dehnung<=At*1.5)],'k',linewidth=0.5,path_effects=[pe.Stroke(linewidth=1,foreground='white'),pe.Normal()])
+	plt.plot(Dehnung[np.where(Dehnung<=At*1.5)],Spannung[np.where(Dehnung<=At*1.5)],'k',linewidth=0.5,path_effects=[pe.Stroke(linewidth=1,foreground='white'),pe.Normal()])
 
-	ax1.set_xlim([-max(Dehnung[np.where(Dehnung<=At*1.5)])*0.05,max(Dehnung[np.where(Dehnung<=At*1.5)])*1.05])
-	ax1.set_ylim([-R*0.05,R*1.1])
+	plt.xlim([-max(Dehnung[np.where(Dehnung<=At*1.5)])*0.05,max(Dehnung[np.where(Dehnung<=At*1.5)])*1.05])
+	plt.ylim([-R*0.05,R*1.1])
 
-	ax1.set_xlabel(r'$\epsilon/1$',fontsize=10)
-	ax1.set_ylabel(r'$\sigma/\rm{Pa}$',fontsize=10)
-	ax1.tick_params(axis='both',pad=2,labelsize=8)
-	ax1.ticklabel_format(style='sci',axis='y',scilimits=(0,0))
-	ax1.xaxis.get_offset_text().set_size(8)
-	ax1.yaxis.get_offset_text().set_size(8)
+	plt.xlabel(r'$\epsilon/1$',fontsize=10)
+	plt.ylabel(r'$\sigma/\rm{Pa}$',fontsize=10)
+	plt.tick_params(axis='both',pad=2,labelsize=8)
+	plt.ticklabel_format(style='sci',axis='y',scilimits=(0,0))
 	plt.tight_layout(pad=0.1)
 	plt.savefig(str(os.path.splitext(f)[0])+'.pdf',transparent=True)
 	plt.savefig(str(os.path.splitext(f)[0])+'.png',dpi=300)
