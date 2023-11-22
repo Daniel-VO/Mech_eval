@@ -1,5 +1,5 @@
 """
-Created 14. November 2023 by Daniel Van Opdenbosch, Technical University of Munich
+Created 22. November 2023 by Daniel Van Opdenbosch, Technical University of Munich
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. It is distributed without any warranty or implied warranty of merchantability or fitness for a particular purpose. See the GNU general public license for more details: <http://www.gnu.org/licenses/>
 """
@@ -18,16 +18,19 @@ from scipy import stats
 def common_elements(list1, list2):
 	return list(set(list1) & set(list2))
 
+def namesplitter(d):
+	return d[0].split('-')[0]+d[0].split('-')[1]
+
 os.system('mv read.log read.alt')
 
 data=np.load('data.npy',allow_pickle=True)
 #[filename,R,E,A,W,Re,Ag,At,Wt]
 
 nameslist=[]
-for n,value in enumerate(data):
-	# ~ print(value[0])
-	nameslist.append(value[0].split('-')[0]+value[0].split('-')[1])
-	# ~ print(value[0])
+for d in data:
+	# ~ print(d[0])
+	nameslist.append(namesplitter(d))
+	# ~ print(d[0])
 
 nameplot=[]
 Rplot=[]
@@ -39,24 +42,14 @@ Agplot=[]
 Atplot=[]
 Wtplot=[]
 for name in sorted(common_elements(nameslist,nameslist)):
-	R=np.array([])
-	E=np.array([])
-	A=np.array([])
-	W=np.array([])
-	Re=np.array([])
-	Ag=np.array([])
-	At=np.array([])
-	Wt=np.array([])
-	for n,value in enumerate(data):
-		if value[0].split('-')[0]+value[0].split('-')[1]==name:
-			R=np.append(R,float(value[1]))
-			E=np.append(E,float(value[2]))
-			A=np.append(A,float(value[3]))
-			W=np.append(W,float(value[4]))
-			Re=np.append(Re,float(value[5]))
-			Ag=np.append(Ag,float(value[6]))
-			At=np.append(At,float(value[7]))
-			Wt=np.append(Wt,float(value[8]))
+	R=[float(d[1]) for d in data if namesplitter(d)==name]
+	E=[float(d[2]) for d in data if namesplitter(d)==name]
+	A=[float(d[3]) for d in data if namesplitter(d)==name]
+	W=[float(d[4]) for d in data if namesplitter(d)==name]
+	Re=[float(d[5]) for d in data if namesplitter(d)==name]
+	Ag=[float(d[6]) for d in data if namesplitter(d)==name]
+	At=[float(d[7]) for d in data if namesplitter(d)==name]
+	Wt=[float(d[8]) for d in data if namesplitter(d)==name]
 	nameplot.append(name.replace('_','-'))
 	Rplot.append(uq(np.median(R),pq.Pa,stats.median_abs_deviation(R)))
 	Eplot.append(uq(np.median(E),pq.Pa,stats.median_abs_deviation(E)))
