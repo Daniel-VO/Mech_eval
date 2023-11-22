@@ -98,7 +98,7 @@ def mech(f,Dehngrenze,L,alpha,*args):
 	plt.close('all')
 	mpl.rc('text',usetex=True)
 	mpl.rc('text.latex',preamble=r'\usepackage[helvet]{sfmath}')
-	plt.subplots(figsize=(7.5/2.54,5.3/2.54))
+	plt.figure(figsize=(7.5/2.54,5.3/2.54))
 
 	plt.plot(Dehnung,Dehnung*E,'k',linewidth=0.5,path_effects=[pe.Stroke(linewidth=1,foreground='white'),pe.Normal()])
 	plt.plot(Dehnung,Dehnung*Econflo,'k:',linewidth=0.5,path_effects=[pe.Stroke(linewidth=1,foreground='white'),pe.Normal()])
