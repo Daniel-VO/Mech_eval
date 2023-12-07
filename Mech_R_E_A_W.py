@@ -1,5 +1,5 @@
 """
-Created 23. November 2023 by Daniel Van Opdenbosch, Technical University of Munich
+Created 29. November 2023 by Daniel Van Opdenbosch, Technical University of Munich
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. It is distributed without any warranty or implied warranty of merchantability or fitness for a particular purpose. See the GNU general public license for more details: <http://www.gnu.org/licenses/>
 """
@@ -131,7 +131,5 @@ def mech(f,Dehngrenze,L,alpha,*args):
 
 	return filename,R,E,A,W,Re,Ag,At,Wt
 
-data=ray.get([mech.remote(f,Dehngrenze,L,alpha,sys.argv) for f in files])
-
-np.save('data.npy',data)
-os.system('python3 read_Mech_R_E_A_W.py')
+np.save('data.npy',ray.get([mech.remote(f,Dehngrenze,L,alpha,sys.argv) for f in files]))
+os.system('python3 Mech_R_E_A_W_read.py')
