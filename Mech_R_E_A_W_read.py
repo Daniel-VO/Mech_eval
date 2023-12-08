@@ -1,18 +1,16 @@
 """
-Created 29. November 2023 by Daniel Van Opdenbosch, Technical University of Munich
+Created 08. December 2023 by Daniel Van Opdenbosch, Technical University of Munich
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. It is distributed without any warranty or implied warranty of merchantability or fitness for a particular purpose. See the GNU general public license for more details: <http://www.gnu.org/licenses/>
 """
 
-import numpy as np
-import glob
 import os
+import numpy as np
 import quantities as pq
 from quantities import UncertainQuantity as uq
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import matplotlib.patheffects as pe
-from scipy import signal
 from scipy import stats
 
 def common_elements(list1,list2):
