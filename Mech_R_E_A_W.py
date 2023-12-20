@@ -67,6 +67,9 @@ def mech(f,Dehngrenze,L,alpha,*args):
 		theil=theils[np.where(theils[:,0]==max(theils[:,0]))][0]
 	except:
 		os.system('mv '+f+' '+filename+'.aus')
+		plt.close('all')
+		plt.plot(Dehnung,Spannung)
+		plt.savefig(filename+'_aus.png',dpi=300)
 	E,disp,Econflo,Econfup=theil[0],theil[1],theil[2],theil[3]
 
 	Dehnung+=disp/E
