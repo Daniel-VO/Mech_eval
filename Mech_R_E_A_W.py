@@ -1,5 +1,5 @@
 """
-Created 08. December 2023 by Daniel Van Opdenbosch, Technical University of Munich
+Created 20. December 2023 by Daniel Van Opdenbosch, Technical University of Munich
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. It is distributed without any warranty or implied warranty of merchantability or fitness for a particular purpose. See the GNU general public license for more details: <http://www.gnu.org/licenses/>
 """
@@ -63,7 +63,10 @@ def mech(f,Dehngrenze,L,alpha,*args):
 		ind=np.arange(i*Punkte,(i+1)*Punkte)
 		theils=np.append(theils,stats.theilslopes(Spannung[ind],x=Dehnung[ind]))
 	theils=theils.reshape(Schritte-1,4)
-	theil=theils[np.where(theils[:,0]==max(theils[:,0]))][0]
+	try:
+		theil=theils[np.where(theils[:,0]==max(theils[:,0]))][0]
+	except:
+		os.system('mv '+f+' '+filename+'.aus')
 	E,disp,Econflo,Econfup=theil[0],theil[1],theil[2],theil[3]
 
 	Dehnung+=disp/E
