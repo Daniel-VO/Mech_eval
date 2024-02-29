@@ -1,5 +1,5 @@
 """
-Created 20. December 2023 by Daniel Van Opdenbosch, Technical University of Munich
+Created 29. Februar 2024 by Daniel Van Opdenbosch, Technical University of Munich
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. It is distributed without any warranty or implied warranty of merchantability or fitness for a particular purpose. See the GNU general public license for more details: <http://www.gnu.org/licenses/>
 """
@@ -64,7 +64,7 @@ def mech(f,Dehngrenze,L,alpha,*args):
 		theils=np.append(theils,stats.theilslopes(Spannung[ind],x=Dehnung[ind]))
 	theils=theils.reshape(Schritte-1,4)
 	try:
-		theil=theils[np.where(theils[:,0]==max(theils[:,0]))][0]
+		theil=theils[np.argmax(theils[:,0])]
 	except:
 		os.system('mv '+f+' '+filename+'.aus')
 		plt.close('all')
@@ -73,7 +73,7 @@ def mech(f,Dehngrenze,L,alpha,*args):
 	E,disp,Econflo,Econfup=theil[0],theil[1],theil[2],theil[3]
 
 	Dehnung+=disp/E
-	Spannung,Dehnung=Spannung[np.where(Dehnung>0)],Dehnung[np.where(Dehnung>0)]
+	Spannung,Dehnung=np.append(0,Spannung[np.where(Dehnung>0)]),np.append(0,Dehnung[np.where(Dehnung>0)])
 
 	indBruch=np.where(Spannung>=R/10)[-1][-1]
 	Agt=float(Dehnung[np.where(Spannung==R)][0])
@@ -98,7 +98,7 @@ def mech(f,Dehngrenze,L,alpha,*args):
 
 	with open('results.log','a') as logfile:
 		logfile.write(str([filename,'R:',R,' E:',E,' A:',A,' W:',W,' Re:',Re,' Ag:',Ag,' At:',At,' Wt:',Wt]).replace('[','').replace(']','').replace("'","")+'\n')
-	np.savetxt(filename+'_corr.txt',np.transpose([Dehnung,Spannung]))
+	np.savetxt(f.replace('.txt','_corr.txt'),np.transpose([Dehnung,Spannung]))
 
 	plt.close('all')
 	mpl.rc('text',usetex=True)
