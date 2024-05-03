@@ -1,5 +1,5 @@
 """
-Created 29. Februar 2024 by Daniel Van Opdenbosch, Technical University of Munich
+Created 03. Mai 2024 by Daniel Van Opdenbosch, Technical University of Munich
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. It is distributed without any warranty or implied warranty of merchantability or fitness for a particular purpose. See the GNU general public license for more details: <http://www.gnu.org/licenses/>
 """
@@ -96,8 +96,7 @@ def mech(f,Dehngrenze,L,alpha,*args):
 		m,sigma0=Bahadur(f,np.log(Dehnung[Bereich]+1),Spannung[Bereich]*(Dehnung[Bereich]+1))
 		print(filename,'m',m,'sigma0',sigma0)
 
-	with open('results.log','a') as logfile:
-		logfile.write(str([filename,'R:',R,' E:',E,' A:',A,' W:',W,' Re:',Re,' Ag:',Ag,' At:',At,' Wt:',Wt]).replace('[','').replace(']','').replace("'","")+'\n')
+	print(str([filename,'R:',R,' E:',E,' A:',A,' W:',W,' Re:',Re,' Ag:',Ag,' At:',At,' Wt:',Wt]).replace('[','').replace(']','').replace("'",""),file=open('results.log','a'))
 	np.savetxt(f.replace('.txt','_corr.txt'),np.transpose([Dehnung,Spannung]))
 
 	plt.close('all')
@@ -136,5 +135,5 @@ def mech(f,Dehngrenze,L,alpha,*args):
 
 	return filename,R,E,A,W,Re,Ag,At,Wt
 
-np.save('data.npy',ray.get([mech.remote(f,Dehngrenze,L,alpha,sys.argv) for f in files]))
+np.save('mech.npy',ray.get([mech.remote(f,Dehngrenze,L,alpha,sys.argv) for f in files]))
 os.system('python3 Mech_R_E_A_W_read.py')

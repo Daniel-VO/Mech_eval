@@ -1,5 +1,5 @@
 """
-Created 29. Februar 2024 by Daniel Van Opdenbosch, Technical University of Munich
+Created 03. Mai 2024 by Daniel Van Opdenbosch, Technical University of Munich
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. It is distributed without any warranty or implied warranty of merchantability or fitness for a particular purpose. See the GNU general public license for more details: <http://www.gnu.org/licenses/>
 """
@@ -13,15 +13,12 @@ import matplotlib.pyplot as plt
 import matplotlib.patheffects as pe
 from scipy import stats
 
-def common_elements(list1,list2):
-	return list(set(list1)&set(list2))
-
 def namesplitter(d):
 	return d[0].split('-')[0]+d[0].split('-')[1]
 
 os.system('mv read.log read.alt')
 
-data=np.load('data.npy',allow_pickle=True)
+data=np.load('mech.npy',allow_pickle=True)
 #[filename,R,E,A,W,Re,Ag,At,Wt]
 
 nameslist=[]
@@ -39,7 +36,7 @@ Replot=[]
 Agplot=[]
 Atplot=[]
 Wtplot=[]
-for name in sorted(common_elements(nameslist,nameslist)):
+for name in np.unique(nameslist):
 	R=[float(d[1]) for d in data if namesplitter(d)==name]
 	E=[float(d[2]) for d in data if namesplitter(d)==name]
 	A=[float(d[3]) for d in data if namesplitter(d)==name]
@@ -58,9 +55,8 @@ for name in sorted(common_elements(nameslist,nameslist)):
 	Atplot.append(uq(np.median(At),pq.dimensionless,stats.median_abs_deviation(At)))
 	Wtplot.append(uq(np.median(Wt),pq.J/pq.m**3,stats.median_abs_deviation(Wt)))
 
-with open('read.log','a') as e:
-	for s,values in enumerate(nameplot):
-		e.write(str([i for i in [nameplot[s],'R:',Rplot[s],'E:',Eplot[s],'A:',Aplot[s],'W:',Wplot[s],'Re:',Replot[s],'Ag:',Agplot[s],'At:',Atplot[s],'Wt:',Wtplot[s]]]).replace('UncertainQuantity','').replace('array','').replace('\n','').replace('[','').replace(']','').replace('(','').replace(')','').replace("'","")+'\n')
+for s,values in enumerate(nameplot):
+	print(str([i for i in [nameplot[s],'R:',Rplot[s],'E:',Eplot[s],'A:',Aplot[s],'W:',Wplot[s],'Re:',Replot[s],'Ag:',Agplot[s],'At:',Atplot[s],'Wt:',Wtplot[s]]]).replace('UncertainQuantity','').replace('array','').replace('\n','').replace('[','').replace(']','').replace('(','').replace(')','').replace("'",""),file=open('read.log','a'))
 
 Rplot=uq([i.magnitude for i in Rplot],Rplot[0].units,[i.uncertainty for i in Rplot])
 Eplot=uq([i.magnitude for i in Eplot],Eplot[0].units,[i.uncertainty for i in Eplot])
