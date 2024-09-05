@@ -1,5 +1,5 @@
 """
-Created 03. Mai 2024 by Daniel Van Opdenbosch, Technical University of Munich
+Created 05. September 2024 by Daniel Van Opdenbosch, Technical University of Munich
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. It is distributed without any warranty or implied warranty of merchantability or fitness for a particular purpose. See the GNU general public license for more details: <http://www.gnu.org/licenses/>
 """
@@ -19,7 +19,7 @@ def namesplitter(d):
 os.system('mv read.log read.alt')
 
 data=np.load('mech.npy',allow_pickle=True)
-#[filename,R,E,A,W,Re,Ag,At,Wt]
+#[filename,R,E,A,W,Rp,Ag,At,Wt]
 
 nameslist=[]
 for d in data:
@@ -32,7 +32,7 @@ Rplot=[]
 Eplot=[]
 Aplot=[]
 Wplot=[]
-Replot=[]
+Rpplot=[]
 Agplot=[]
 Atplot=[]
 Wtplot=[]
@@ -41,7 +41,7 @@ for name in np.unique(nameslist):
 	E=[float(d[2]) for d in data if namesplitter(d)==name]
 	A=[float(d[3]) for d in data if namesplitter(d)==name]
 	W=[float(d[4]) for d in data if namesplitter(d)==name]
-	Re=[float(d[5]) for d in data if namesplitter(d)==name]
+	Rp=[float(d[5]) for d in data if namesplitter(d)==name]
 	Ag=[float(d[6]) for d in data if namesplitter(d)==name]
 	At=[float(d[7]) for d in data if namesplitter(d)==name]
 	Wt=[float(d[8]) for d in data if namesplitter(d)==name]
@@ -50,19 +50,19 @@ for name in np.unique(nameslist):
 	Eplot.append(uq(np.median(E),pq.Pa,stats.median_abs_deviation(E)))
 	Aplot.append(uq(np.median(A),pq.dimensionless,stats.median_abs_deviation(A)))
 	Wplot.append(uq(np.median(W),pq.J/pq.m**3,stats.median_abs_deviation(W)))
-	Replot.append(uq(np.median(Re),pq.Pa,stats.median_abs_deviation(Re)))
+	Rpplot.append(uq(np.median(Rp),pq.Pa,stats.median_abs_deviation(Rp)))
 	Agplot.append(uq(np.median(Ag),pq.dimensionless,stats.median_abs_deviation(Ag)))
 	Atplot.append(uq(np.median(At),pq.dimensionless,stats.median_abs_deviation(At)))
 	Wtplot.append(uq(np.median(Wt),pq.J/pq.m**3,stats.median_abs_deviation(Wt)))
 
 for s,values in enumerate(nameplot):
-	print(str([i for i in [nameplot[s],'R:',Rplot[s],'E:',Eplot[s],'A:',Aplot[s],'W:',Wplot[s],'Re:',Replot[s],'Ag:',Agplot[s],'At:',Atplot[s],'Wt:',Wtplot[s]]]).replace('UncertainQuantity','').replace('array','').replace('\n','').replace('[','').replace(']','').replace('(','').replace(')','').replace("'",""),file=open('read.log','a'))
+	print(str([i for i in [nameplot[s],'R:',Rplot[s],'E:',Eplot[s],'A:',Aplot[s],'W:',Wplot[s],'Rp:',Rpplot[s],'Ag:',Agplot[s],'At:',Atplot[s],'Wt:',Wtplot[s]]]).replace('UncertainQuantity','').replace('array','').replace('\n','').replace('[','').replace(']','').replace('(','').replace(')','').replace("'",""),file=open('read.log','a'))
 
 Rplot=uq([i.magnitude for i in Rplot],Rplot[0].units,[i.uncertainty for i in Rplot])
 Eplot=uq([i.magnitude for i in Eplot],Eplot[0].units,[i.uncertainty for i in Eplot])
 Aplot=uq([i.magnitude for i in Aplot],Aplot[0].units,[i.uncertainty for i in Aplot])
 Wplot=uq([i.magnitude for i in Wplot],Wplot[0].units,[i.uncertainty for i in Wplot])
-Replot=uq([i.magnitude for i in Replot],Replot[0].units,[i.uncertainty for i in Replot])
+Rpplot=uq([i.magnitude for i in Rpplot],Rpplot[0].units,[i.uncertainty for i in Rpplot])
 Agplot=uq([i.magnitude for i in Agplot],Agplot[0].units,[i.uncertainty for i in Agplot])
 Atplot=uq([i.magnitude for i in Atplot],Atplot[0].units,[i.uncertainty for i in Atplot])
 Wtplot=uq([i.magnitude for i in Wtplot],Wtplot[0].units,[i.uncertainty for i in Wtplot])
@@ -79,7 +79,7 @@ mpl.rc('text.latex',preamble=r'\usepackage[helvet]{sfmath}')
 plt.figure(figsize=(7.5/2.54,5.3/2.54))
 
 plt.errorbar(nameplot,Rplot.magnitude,marker='s',color='k',yerr=np.array(Rplot.uncertainty),markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0)
-plt.errorbar(nameplot,Replot.magnitude,marker='o',color='k',yerr=np.array(Replot.uncertainty),markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0)
+plt.errorbar(nameplot,Rpplot.magnitude,marker='o',color='k',yerr=np.array(Rpplot.uncertainty),markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0)
 
 # ~ plt.xlabel(xlabel,fontsize=10)
 # ~ plt.xticks(x,labels)

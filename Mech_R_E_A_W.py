@@ -1,5 +1,5 @@
 """
-Created 03. Mai 2024 by Daniel Van Opdenbosch, Technical University of Munich
+Created 05. September 2024 by Daniel Van Opdenbosch, Technical University of Munich
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. It is distributed without any warranty or implied warranty of merchantability or fitness for a particular purpose. See the GNU general public license for more details: <http://www.gnu.org/licenses/>
 """
@@ -84,9 +84,9 @@ def mech(f,Dehngrenze,L,alpha,*args):
 
 	if Ag<Dehngrenze:
 		Dehngrenze=Ag
-		Re=R
+		Rp=R
 	else:
-		Re=Spannung[np.where(Dehnung-Spannung/E>=Dehngrenze)][0]
+		Rp=Spannung[np.where(Dehnung-Spannung/E>=Dehngrenze)][0]
 
 	Wt=np.trapz(Spannung[:indBruch],x=Dehnung[:indBruch])
 	W=Wt-R**2/E/2
@@ -96,7 +96,7 @@ def mech(f,Dehngrenze,L,alpha,*args):
 		m,sigma0=Bahadur(f,np.log(Dehnung[Bereich]+1),Spannung[Bereich]*(Dehnung[Bereich]+1))
 		print(filename,'m',m,'sigma0',sigma0)
 
-	print(str([filename,'R:',R,' E:',E,' A:',A,' W:',W,' Re:',Re,' Ag:',Ag,' At:',At,' Wt:',Wt]).replace('[','').replace(']','').replace("'",""),file=open('results.log','a'))
+	print(str([filename,'R:',R,' E:',E,' A:',A,' W:',W,' Rp:',Rp,' Ag:',Ag,' At:',At,' Wt:',Wt]).replace('[','').replace(']','').replace("'",""),file=open('results.log','a'))
 	np.savetxt(f.replace('.txt','_corr.txt'),np.transpose([Dehnung,Spannung]))
 
 	plt.close('all')
@@ -110,7 +110,7 @@ def mech(f,Dehngrenze,L,alpha,*args):
 
 	plt.plot(Dehnung+Dehngrenze,Dehnung*E,'k--',linewidth=0.5,path_effects=[pe.Stroke(linewidth=1,foreground='white'),pe.Normal()])
 	plt.errorbar(Dehngrenze,0,marker='s',color='k',markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0,path_effects=[pe.Stroke(linewidth=2,foreground='w'),pe.Normal()],zorder=10)
-	plt.errorbar(Dehngrenze+Re/E,Re,marker='s',color='k',markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0,path_effects=[pe.Stroke(linewidth=2,foreground='w'),pe.Normal()],zorder=10)
+	plt.errorbar(Dehngrenze+Rp/E,Rp,marker='s',color='k',markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0,path_effects=[pe.Stroke(linewidth=2,foreground='w'),pe.Normal()],zorder=10)
 
 	plt.plot(Dehnung+Agt-R/E,Dehnung*E,'k--',linewidth=0.5,path_effects=[pe.Stroke(linewidth=1,foreground='white'),pe.Normal()])
 	plt.errorbar(Agt-R/E,0,marker='s',color='k',markersize=1,elinewidth=0.5,capthick=0.5,capsize=2,linewidth=0,path_effects=[pe.Stroke(linewidth=2,foreground='w'),pe.Normal()],zorder=10)
@@ -133,7 +133,7 @@ def mech(f,Dehngrenze,L,alpha,*args):
 	plt.savefig(str(os.path.splitext(f)[0])+'.pdf')
 	plt.savefig(str(os.path.splitext(f)[0])+'.png',dpi=300)
 
-	return filename,R,E,A,W,Re,Ag,At,Wt
+	return filename,R,E,A,W,Rp,Ag,At,Wt
 
 np.save('mech.npy',ray.get([mech.remote(f,Dehngrenze,L,alpha,sys.argv) for f in files]))
 os.system('python3 Mech_R_E_A_W_read.py')
